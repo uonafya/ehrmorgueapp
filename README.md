@@ -1,9 +1,9 @@
-${moduleName}
+${MorgueApp}
 ==========================
 
 Description
 -----------
-This is a very basic module which can be used as a starting point in creating a new module.
+Morgue App for KenyaEMR+
 
 Building from Source
 --------------------
