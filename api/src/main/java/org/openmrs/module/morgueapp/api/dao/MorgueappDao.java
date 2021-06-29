@@ -9,10 +9,8 @@
  */
 package org.openmrs.module.morgueapp.api.dao;
 
-import org.hibernate.criterion.Restrictions;
 import org.openmrs.api.db.hibernate.DbSession;
 import org.openmrs.api.db.hibernate.DbSessionFactory;
-import org.openmrs.module.morgueapp.Item;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -24,14 +22,5 @@ public class MorgueappDao {
 	
 	private DbSession getSession() {
 		return sessionFactory.getCurrentSession();
-	}
-	
-	public Item getItemByUuid(String uuid) {
-		return (Item) getSession().createCriteria(Item.class).add(Restrictions.eq("uuid", uuid)).uniqueResult();
-	}
-	
-	public Item saveItem(Item item) {
-		getSession().saveOrUpdate(item);
-		return item;
 	}
 }
