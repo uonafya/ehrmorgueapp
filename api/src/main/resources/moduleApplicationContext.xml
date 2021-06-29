@@ -55,4 +55,12 @@
             </list>
         </property>
     </bean>
+
+    <bean id="morgueapp.app.morgueapp" factory-bean="kenyacore.appFactoryBean" factory-method="createInstance">
+        <constructor-arg value="morgueapp.home" />
+        <constructor-arg value="Morgue" />
+        <constructor-arg value="morgueapp/main.page" />
+        <constructor-arg value="morgueapp:apps/ipd.png" />
+        <constructor-arg value="3005" />
+    </bean>
 </beans>
