@@ -15,7 +15,44 @@
 %>
 
 <script>
+    var refreshInTable = function(resultData, dTable){
+        var rowCount = resultData.length;
+        if(rowCount === 0){
+            dTable.find('td.dataTables_empty').html("No Records Found");
+        }
+        dTable.fnPageChange(0);
+    };
 
+    var isTableEmpty = function(resultData, dTable){
+        if(resultData.length > 0){
+            return false
+        }
+        return !dTable || dTable.fnGetNodes().length === 0;
+    };
+
+    jq(function () {
+        jq("#tabs").tabs();
+
+        jq('li.ui-corner-top a').click(function(){
+            if (jq(this).attr('href') === '#morgue-patients'){
+                jq('#refresher a').html('<i class="icon-refresh"></i>Refresh Patients');
+                /*get Dead Patients*/;
+            }
+            else{
+                jq('#refresher a').html('<i class="icon-refresh"></i>Refresh Queue');
+                /*Dead in morgue*/;
+            }
+        });
+
+        jq('#refresher a').click(function(){
+            if (jq('li.ui-state-active').attr('aria-controls') === "morgue-patients"){
+                /*get Dead Patients*/;
+            }
+            else if (jq('li.ui-state-active').attr('aria-controls') === "morgue-queue"){
+                /*Dead in morgue*/;
+            }
+        });
+    });
 </script>
 
 <style>
@@ -76,7 +113,7 @@
 
         <li>
             <i class="icon-chevron-right link"></i>
-            <a href="chooseIpdWard.page">Morgue</a>
+            <a href="">Morgue</a>
         </li>
 
         <li>
@@ -102,8 +139,8 @@
 
     <div id="tabs">
         <ul>
-            <li><a href="#ipd-patients">Admitted</a></li>
-            <li><a href="#ipd-queue">Admission Queue</a></li>
+            <li><a href="#morgue-patients">Admitted</a></li>
+            <li><a href="#morgue-queue">Admission Queue</a></li>
             <li id="refresher" class="ui-state-default">
                 <a class="button confirm" style="color:#fff">
                     <i class="icon-refresh"></i>
@@ -113,12 +150,12 @@
         </ul>
 
         <div id="morgue-patients">
-
+            ${ui.includeFragment("morgueapp", "")}
 
         </div>
 
         <div id="morgue-queue">
-
+            ${ui.includeFragment("morgueapp", "")}
 
         </div>
 

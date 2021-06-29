@@ -27,34 +27,11 @@
 
     <!-- Wraps MorgueappService methods in DB transactions and OpenMRS interceptors,
     which set audit info like dateCreated, changedBy, etc.-->
-    <bean id="morgueapp.MorgueappService"
-            class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
-        <property name="transactionManager">
-            <ref bean="transactionManager" />
-        </property>
-        <property name="target">
-            <bean class="org.openmrs.module.morgueapp.api.impl.MorgueappServiceImpl">
-                <property name="dao" ref="morgueapp.MorgueappDao" />
-            </bean>
-        </property>
-        <property name="preInterceptors">
-            <ref bean="serviceInterceptors" />
-        </property>
-        <property name="transactionAttributeSource">
-            <ref bean="transactionAttributeSource" />
-        </property>
-    </bean>
+
 
     <!-- Adds MorgueappService to OpenMRS context so it can be accessed
     calling Context.getService(MorgueappService.class) -->
-    <bean parent="serviceContext">
-        <property name="moduleService">
-            <list>
-                <value>org.openmrs.module.morgueapp.api.MorgueappService</value>
-                <ref bean="morgueapp.MorgueappService" />
-            </list>
-        </property>
-    </bean>
+
 
     <bean id="morgueapp.app.morgueapp" factory-bean="kenyacore.appFactoryBean" factory-method="createInstance">
         <constructor-arg value="morgueapp.home" />
