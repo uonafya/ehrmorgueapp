@@ -135,6 +135,11 @@
         <span> waiting</span>
     </div>
 
+    <div class="identifiers">
+        <em>Current Time:</em>
+        <span>${date}</span>
+    </div>
+
     <div class="clear"></div>
 
     <div id="tabs">
@@ -150,13 +155,11 @@
         </ul>
 
         <div id="morgue-patients">
-            ${ui.includeFragment("morgueapp", "")}
-
+            TO-DO
         </div>
 
         <div id="morgue-queue">
-            ${ui.includeFragment("morgueapp", "")}
-
+            TO-DO
         </div>
 
 
