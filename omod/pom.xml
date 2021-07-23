@@ -50,6 +50,13 @@
             <artifactId>uiframework-api</artifactId>
 
         </dependency>
+        <dependency>
+            <groupId>org.openmrs.module</groupId>
+            <artifactId>calculation-api</artifactId>
+            <version>${calculationVersion}</version>
+            <scope>provided</scope>
+        </dependency>
+
 
         <dependency>
 
@@ -142,5 +149,11 @@
 			</plugin>
 		</plugins>
 	</build>
+    <properties>
+        <calculationVersion>1.0</calculationVersion>
+    </properties>
+
+
+
 
 </project>

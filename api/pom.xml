@@ -64,11 +64,20 @@
 
         </dependency>
 
+
         <dependency>
 
             <groupId>org.openmrs.module</groupId>
 
             <artifactId>metadatadeploy-api</artifactId>
+
+        </dependency>
+
+        <dependency>
+
+            <groupId>org.openmrs.module</groupId>
+
+            <artifactId>calculation-api</artifactId>
 
         </dependency>
 
@@ -102,6 +111,7 @@
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>
+
 
         <dependency>
             <groupId>org.openmrs.test</groupId>
