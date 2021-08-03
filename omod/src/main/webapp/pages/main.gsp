@@ -22,35 +22,31 @@
         }
         dTable.fnPageChange(0);
     };
-
     var isTableEmpty = function(resultData, dTable){
         if(resultData.length > 0){
             return false
         }
         return !dTable || dTable.fnGetNodes().length === 0;
     };
-
-   jq(function () {
+    jq(function () {
         jq("#tabs").tabs();
-
         jq('li.ui-corner-top a').click(function(){
-           if (jq(this).attr('href') === '#morgue-patients'){
-               jq('#refresher a').html('<i class="icon-refresh"></i>Refresh Patients');
-                getDeceasedPatients();
-           }
-           else{
-             jq('#refresher a').html('<i class="icon-refresh"></i>Refresh Queue');
-                getMorgueQueue();
-          }
-      });
-
+            if (jq(this).attr('href') === '#morgue-patients'){
+                jq('#refresher a').html('<i class="icon-refresh"></i>Refresh Patients');
+                /*get Dead Patients*/;
+            }
+            else{
+                jq('#refresher a').html('<i class="icon-refresh"></i>Refresh Queue');
+                /*Dead in morgue*/;
+            }
+        });
         jq('#refresher a').click(function(){
-           if (jq('li.ui-state-active').attr('aria-controls') === "morgue-patients"){
-               getDeceasedPatients();
-           }
-           else if (jq('li.ui-state-active').attr('aria-controls') === "morgue-queue"){
-                getMorgueQueue();
-           }
+            if (jq('li.ui-state-active').attr('aria-controls') === "morgue-patients"){
+                /*get Dead Patients*/;
+            }
+            else if (jq('li.ui-state-active').attr('aria-controls') === "morgue-queue"){
+                /*Dead in morgue*/;
+            }
         });
     });
 </script>
@@ -121,23 +117,31 @@
 
         </li>
     </ul>
-
-
 </div>
 
 <div class="patient-header new-patient-header">
     <div class="demographics">
         <h1 class="name" style="border-bottom: 1px solid #ddd;">
-
+            <span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</span>
         </h1>
+    </div>
+
+    <div class="identifiers">
+        <em>&nbsp; &nbsp; Patients:</em>
+        <span> waiting</span>
+    </div>
+
+    <div class="identifiers">
+        <em>Current Time:</em>
+        <span>${date}</span>
     </div>
 
     <div class="clear"></div>
 
     <div id="tabs">
         <ul>
-            <li><a href="#ipd-patients">Admitted</a></li>
-            <li><a href="#ipd-queue">Admission Queue</a></li>
+            <li><a href="#morgue-patients">Admitted</a></li>
+            <li><a href="#morgue-queue">Admission Queue</a></li>
             <li id="refresher" class="ui-state-default">
                 <a class="button confirm" style="color:#fff">
                     <i class="icon-refresh"></i>
@@ -146,14 +150,21 @@
             </li>
         </ul>
 
-        <div id="ipd-patients">
-            ${ui.includeFragment("morgueapp", "morguePatients")}
+        <div id="morgue-patients">
+            <table>
 
+                <% deadList.each {%>
+                <tr>
+                    <td>${it.personId}</td><td>${it.personId}</td>
+                    <td>${it.names.givenName}</td>
+                    <td>${it.deathDate}</td>
+                </tr>
+                <%}%>
+            </table>
         </div>
 
-        <div id="ipd-queue">
-            ${ui.includeFragment("morgueapp", "morgueQueue")}
-
+        <div id="morgue-queue">
+            TO-DO
         </div>
 
 

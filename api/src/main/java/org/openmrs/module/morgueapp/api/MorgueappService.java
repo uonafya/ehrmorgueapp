@@ -9,16 +9,21 @@
  */
 package org.openmrs.module.morgueapp.api;
 
+import org.openmrs.Person;
 import org.openmrs.annotation.Authorized;
 import org.openmrs.api.APIException;
 import org.openmrs.api.OpenmrsService;
 import org.openmrs.module.morgueapp.MorgueappConfig;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * The main service of this module, which is exposed for other modules. See
  * moduleApplicationContext.xml on how it is wired up.
  */
 public interface MorgueappService extends OpenmrsService {
+
+    public List<Person> getDeadPeople();
 
 }

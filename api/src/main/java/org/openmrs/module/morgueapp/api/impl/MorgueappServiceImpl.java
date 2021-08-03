@@ -9,10 +9,13 @@
  */
 package org.openmrs.module.morgueapp.api.impl;
 
+import org.openmrs.Person;
 import org.openmrs.api.UserService;
 import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.morgueapp.api.MorgueappService;
 import org.openmrs.module.morgueapp.api.dao.MorgueappDao;
+
+import java.util.List;
 
 public class MorgueappServiceImpl extends BaseOpenmrsService implements MorgueappService {
 	
@@ -32,5 +35,10 @@ public class MorgueappServiceImpl extends BaseOpenmrsService implements Morgueap
 	 */
 	public void setUserService(UserService userService) {
 		this.userService = userService;
+	}
+
+	@Override
+	public List<Person> getDeadPeople() {
+		return dao.getDeadPeople();
 	}
 }
