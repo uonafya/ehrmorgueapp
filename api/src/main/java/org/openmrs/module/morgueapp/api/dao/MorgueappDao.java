@@ -22,20 +22,7 @@ import org.hibernate.criterion.Restrictions;
 
 import java.util.List;
 
-@Repository("morgueapp.MorgueappDao")
-public class MorgueappDao {
+public interface MorgueappDao {
 
-	private SessionFactory sessionFactory;
-	
-	private SessionFactory getSession() {
-		return sessionFactory;
-	}
-
-	public List<Person> getDeadPeople(){
-		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(
-				Person.class);
-		criteria.add(Restrictions.eq("dead", 1));
-
-		return criteria.list();
-	}
+	public List<Person> getDeadPeople();
 }

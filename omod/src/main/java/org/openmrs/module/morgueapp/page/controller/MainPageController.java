@@ -19,7 +19,4 @@ public void controller(PageModel model){
     model.addAttribute("deadList", service.getDeadPeople());
 }
 
-
-
-
 }

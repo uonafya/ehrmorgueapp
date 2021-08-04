@@ -16,12 +16,14 @@ import org.openmrs.api.OpenmrsService;
 import org.openmrs.module.morgueapp.MorgueappConfig;
 import org.springframework.transaction.annotation.Transactional;
 
+
 import java.util.List;
 
 /**
  * The main service of this module, which is exposed for other modules. See
  * moduleApplicationContext.xml on how it is wired up.
  */
+@Transactional
 public interface MorgueappService extends OpenmrsService {
 
     public List<Person> getDeadPeople();

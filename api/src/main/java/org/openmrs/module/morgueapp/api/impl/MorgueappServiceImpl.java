@@ -19,7 +19,7 @@ import java.util.List;
 
 public class MorgueappServiceImpl extends BaseOpenmrsService implements MorgueappService {
 	
-	MorgueappDao dao;
+	private  MorgueappDao dao;
 	
 	UserService userService;
 	
