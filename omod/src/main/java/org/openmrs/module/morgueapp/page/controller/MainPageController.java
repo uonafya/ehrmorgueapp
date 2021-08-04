@@ -17,6 +17,7 @@ public class MainPageController {
 public void controller(PageModel model){
     MorgueappService service = Context.getService(MorgueappService.class);
     model.addAttribute("deadList", service.getDeadPeople());
+    model.addAttribute("date", new Date());
 }
 
 }

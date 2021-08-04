@@ -15,40 +15,9 @@
 %>
 
 <script>
-    var refreshInTable = function(resultData, dTable){
-        var rowCount = resultData.length;
-        if(rowCount === 0){
-            dTable.find('td.dataTables_empty').html("No Records Found");
-        }
-        dTable.fnPageChange(0);
-    };
-    var isTableEmpty = function(resultData, dTable){
-        if(resultData.length > 0){
-            return false
-        }
-        return !dTable || dTable.fnGetNodes().length === 0;
-    };
-    jq(function () {
-        jq("#tabs").tabs();
-        jq('li.ui-corner-top a').click(function(){
-            if (jq(this).attr('href') === '#morgue-patients'){
-                jq('#refresher a').html('<i class="icon-refresh"></i>Refresh Patients');
-                /*get Dead Patients*/;
-            }
-            else{
-                jq('#refresher a').html('<i class="icon-refresh"></i>Refresh Queue');
-                /*Dead in morgue*/;
-            }
-        });
-        jq('#refresher a').click(function(){
-            if (jq('li.ui-state-active').attr('aria-controls') === "morgue-patients"){
-                /*get Dead Patients*/;
-            }
-            else if (jq('li.ui-state-active').attr('aria-controls') === "morgue-queue"){
-                /*Dead in morgue*/;
-            }
-        });
-    });
+   jQuery(function (){
+      jQuery("#deadDetails").DataTable();
+   });
 </script>
 
 <style>
@@ -151,15 +120,29 @@
         </ul>
 
         <div id="morgue-patients">
-            <table>
+            <table id="deadDetails">
+                <thead>
+                <tr>
+                    <th>Person ID</th>
+                    <th>Name</th>
+                    <th>Date of Death</th>
+                    <th>Cause of Death(Coded)</th>
 
+
+                </tr>
+                </thead>
+                <tbody>
                 <% deadList.each {%>
                 <tr>
-                    <td>${it.personId}</td><td>${it.personId}</td>
+                    <td>${it.personId}</td>
                     <td>${it.names.givenName}</td>
                     <td>${it.deathDate}</td>
+                    <td>${it.causeOfDeath.names.name}</td>
+
                 </tr>
+
                 <%}%>
+                </tbody>
             </table>
         </div>
 
