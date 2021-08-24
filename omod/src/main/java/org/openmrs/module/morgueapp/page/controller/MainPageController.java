@@ -8,6 +8,8 @@ import org.openmrs.module.morgueapp.api.MorgueappService;
 import org.openmrs.ui.framework.UiUtils;
 import org.openmrs.ui.framework.page.PageModel;
 import org.openmrs.ui.framework.page.PageRequest;
+import org.openmrs.PersonAttribute;
+import org.openmrs.PersonAttributeType;
 
 
 import java.util.Date;
@@ -18,6 +20,7 @@ public void controller(PageModel model){
     MorgueappService service = Context.getService(MorgueappService.class);
     model.addAttribute("deadList", service.getDeadPeople());
     model.addAttribute("date", new Date());
+    PersonAttribute givenName, middleName, familyName;
 }
 
 }

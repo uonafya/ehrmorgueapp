@@ -18,6 +18,11 @@
    jQuery(function (){
       jQuery("#deadDetails").DataTable();
    });
+
+
+
+
+
 </script>
 
 <style>
@@ -95,10 +100,12 @@
         </h1>
     </div>
 
-    <div class="identifiers">
-        <em>&nbsp; &nbsp; Patients:</em>
-        <span> waiting</span>
-    </div>
+
+    <script type="text/javascript">
+        jQuery(function() {
+            jQuery('input[name="query"]').focus();
+        });
+    </script>
 
     <div class="identifiers">
         <em>Current Time:</em>
@@ -109,8 +116,6 @@
 
     <div id="tabs">
         <ul>
-            <li><a href="#morgue-patients">Admitted</a></li>
-            <li><a href="#morgue-queue">Admission Queue</a></li>
             <li id="refresher" class="ui-state-default">
                 <a class="button confirm" style="color:#fff">
                     <i class="icon-refresh"></i>
@@ -119,37 +124,29 @@
             </li>
         </ul>
 
-        <div id="morgue-patients">
-            <table id="deadDetails">
+
+            <table cellpadding="5" cellspacing="0" width="100%" id="deadDetails">
                 <thead>
                 <tr>
-                    <th>Person ID</th>
-                    <th>Name</th>
                     <th>Date of Death</th>
-                    <th>Cause of Death(Coded)</th>
-
-
+                    <th>Person ID</th>
+                    <th>Names</th>
+                    <th>Gender</th>
+                    <th>Cause of Death</th>
                 </tr>
                 </thead>
                 <tbody>
                 <% deadList.each {%>
                 <tr>
-                    <td>${it.personId}</td>
-                    <td>${it.names.givenName}</td>
                     <td>${it.deathDate}</td>
+                    <td>${it.personId}</td>
+                    <td>${it.names.givenName}${it.names.middleName}${it.names.familyName}</td>
+                    <td>${it.gender}</td>
                     <td>${it.causeOfDeath.names.name}</td>
-
                 </tr>
-
                 <%}%>
                 </tbody>
             </table>
-        </div>
-
-        <div id="morgue-queue">
-            TO-DO
-        </div>
-
 
     </div>
 </div>
