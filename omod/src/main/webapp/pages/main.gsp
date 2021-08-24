@@ -142,7 +142,7 @@
                     <td>${it.personId}</td>
                     <td>${it.names.givenName}${it.names.middleName}${it.names.familyName}</td>
                     <td>${it.gender}</td>
-                    <td>${it.causeOfDeath.names.name}</td>
+                    <td>${it.causeOfDeath.name}</td>
                 </tr>
                 <%}%>
                 </tbody>
