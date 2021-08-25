@@ -20,17 +20,15 @@
 <script>
    jQuery(function (){
       jQuery("#deadDetails").DataTable();
+       jQuery('#deadDetails').on( 'click', 'tr', function () {
+           window.location = ui.pageLink("morgueapp", "morgueActions")
+       } );
    });
-
-
-
-
-
 </script>
 
 <style>
 .toast-item {
-    background-color: #222;
+    background-color: #333;
 }
 .paginate_disabled_previous, .paginate_enabled_previous, .paginate_disabled_next, .paginate_enabled_next{
     width:auto;
@@ -131,21 +129,21 @@
             <table cellpadding="5" cellspacing="0" width="100%" id="deadDetails">
                 <thead>
                 <tr>
-                    <th>Date of Death</th>
-                    <th>Person ID</th>
                     <th>Names</th>
                     <th>Gender</th>
+                    <th>Person ID</th>
                     <th>Cause of Death</th>
+                    <th>Date of Death</th>
                 </tr>
                 </thead>
                 <tbody>
                 <% deadList.each {%>
                 <tr>
-                    <td>${it.deathDate}</td>
-                    <td>${it.personId}</td>
-                    <td>${it.names.givenName}${it.names.middleName}${it.names.familyName}</td>
+                    <span id="Names"><td>${it.names.givenName}${it.names.middleName ? it.names.middleName : ''}${it.names.familyName}</td></span>
                     <td>${it.gender}</td>
+                    <td>${it.personId}</td>
                     <td>${it.causeOfDeath.name}</td>
+                    <td>${it.deathDate}</td>
                 </tr>
                 <%}%>
                 </tbody>
