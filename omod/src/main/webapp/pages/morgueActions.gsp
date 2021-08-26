@@ -236,27 +236,27 @@ form input[type="radio"] {
                 <div>
                     <label><b>Clean Gloves Given</b></label>
                     <label style="padding-left:0px; width: auto; cursor: pointer;">
-                    <input type="checkbox"  value="5086AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
+                    <input type="checkbox"  value="832c8158-f9a8-459b-97db-ed13fe9380a9"/>
                 </div>
                 <div>
                     <label><b>Embalment Done</b></label>
                     <label style="padding-left:0px; width: auto; cursor: pointer;">
-                    <input type="checkbox"  value="5086AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
+                    <input type="checkbox"  value="bb78fcee-99c8-4073-9224-69c668917405"/>
                 </div>
                 <div>
                     <label><b>Mortuary Daily Charges (Inside Body)</b></label>
                     <label style="padding-left:0px; width: auto; cursor: pointer;">
-                    <input type="checkbox"  value="5086AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
+                    <input type="checkbox"  value="8fff43c6-96f8-46b4-8b00-c5110438bad0"/>
                 </div>
                 <div>
                     <label><b>Mortuary Daily Charges (Outside Body)</b></label>
                     <label style="padding-left:0px; width: auto; cursor: pointer;">
-                    <input type="checkbox"  value="5086AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
+                    <input type="checkbox"  value="48d1569a-7525-41c1-a4da-17ef3c3368f9"/>
                 </div>
                 <div>
                     <label><b>Postmortem Done</b></label>
                     <label style="padding-left:0px; width: auto; cursor: pointer;">
-                    <input type="checkbox"  value="5086AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
+                    <input type="checkbox"  value="f2a0e4f2-d1b4-4530-a087-90d82a69006b"/>
                 </div>
 
             </div>
