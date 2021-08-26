@@ -1,6 +1,7 @@
 package org.openmrs.module.morgueapp.page.controller;
 
 import org.openmrs.PersonAttribute;
+import org.openmrs.Person;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.kenyaui.annotation.AppPage;
 import org.openmrs.module.morgueapp.MorgueConstants;
@@ -8,6 +9,7 @@ import org.openmrs.module.morgueapp.api.MorgueappService;
 import org.openmrs.ui.framework.UiUtils;
 import org.openmrs.ui.framework.page.PageModel;
 import org.openmrs.module.kenyaemr.EmrConstants;
+import org.springframework.web.bind.annotation.RequestParam;
 
 
 import java.util.Date;
@@ -16,13 +18,15 @@ import java.util.Date;
 
 
 
+
 public class MorgueActionsPageController {
 
-    public void controller(PageModel model) {
+    public void controller(PageModel model){
         MorgueappService service = Context.getService(MorgueappService.class);
         model.addAttribute("deadList", service.getDeadPeople());
         model.addAttribute("date", new Date());
         PersonAttribute givenName, middleName, familyName;
-
     }
+
 }
+
