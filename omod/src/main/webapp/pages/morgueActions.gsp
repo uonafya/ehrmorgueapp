@@ -208,7 +208,6 @@ form input[type="radio"] {
         <br/>
         <div id="stacont" class="status-container">
             <span class="status active"></span>
-            Visit Status
         </div>
         <div class="identifiers">
             <em>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Person ID</em>
@@ -216,4 +215,59 @@ form input[type="radio"] {
 
         </div>
 </div>
+</div>
+<div style="min-width: 77%" class="col16 dashboard">
+    <div class="info-header">
+        <form method="post" id="morgue-actions-form">
+            <i class="icon-group"></i>
+            <h3>MORGUE ACTIONS</h3>
+            <div class="info-body" style="padding-bottom: 15px"><div>
+                <label><b>Body From Outside?</b></label>
+                <label style="padding-left:0px; width: auto; cursor: pointer;">
+                    <input type="radio" name="body_from_outside" value="1065AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA">
+                    Yes
+                </label>
+
+                <label style="padding-left:0px; width: auto; cursor: pointer;">
+                    <input type="radio" name="body_from_outside" value="1066AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA">
+                    No
+                </label><br/>
+              </div>
+                <div>
+                    <label><b>Clean Gloves Given</b></label>
+                    <label style="padding-left:0px; width: auto; cursor: pointer;">
+                    <input type="checkbox"  value="5086AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
+                </div>
+                <div>
+                    <label><b>Embalment Done</b></label>
+                    <label style="padding-left:0px; width: auto; cursor: pointer;">
+                    <input type="checkbox"  value="5086AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
+                </div>
+                <div>
+                    <label><b>Mortuary Daily Charges (Inside Body)</b></label>
+                    <label style="padding-left:0px; width: auto; cursor: pointer;">
+                    <input type="checkbox"  value="5086AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
+                </div>
+                <div>
+                    <label><b>Mortuary Daily Charges (Outside Body)</b></label>
+                    <label style="padding-left:0px; width: auto; cursor: pointer;">
+                    <input type="checkbox"  value="5086AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
+                </div>
+                <div>
+                    <label><b>Postmortem Done</b></label>
+                    <label style="padding-left:0px; width: auto; cursor: pointer;">
+                    <input type="checkbox"  value="5086AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
+                </div>
+
+            </div>
+
+        </form>
+
+        <div>
+            <span class="button submit confirm right" id="morgueActionsSubmitButton" style="margin-top: 0px; margin-right: 30px;">
+                <i class="icon-save"></i>
+                Save
+            </span>
+        </div>
+        </div>
 </div>
