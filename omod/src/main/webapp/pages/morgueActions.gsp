@@ -4,6 +4,16 @@
     ui.includeCss("ehrconfigs", "referenceapplication.css")
 %>
 
+<script>
+    jq(function () {
+        jq("#morgueActionsSubmitButton").on("click", function () {
+            jq("#morgue-actions-form").submit();
+            onsubmit(window.location.href="main.page")
+        });
+
+    });
+
+</script>
 <style>
 .toast-item {
     background-color: #222;
