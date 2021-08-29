@@ -20,13 +20,29 @@ import java.util.Date;
 
 
 public class MorgueActionsPageController {
+    public void get(
+            @RequestParam("personId") Person person,
+            PageModel model) {
+        model.addAttribute("person", person);
 
-    public void controller(PageModel model){
+
+        if (person.getGender().equals("M")) {
+            model.addAttribute("gender", "Male");
+        } else {
+            model.addAttribute("gender", "Female");
+        }
         MorgueappService service = Context.getService(MorgueappService.class);
-        model.addAttribute("deadList", service.getDeadPeople());
-        model.addAttribute("date", new Date());
-        PersonAttribute givenName, middleName, familyName;
-    }
 
+
+        model.addAttribute("patientCategory", person.getAttribute(Context.getPersonService().getPersonAttributeTypeByUuid("09cd268a-f0f5-11ea-99a8-b3467ddbf779")));
+        model.addAttribute("personId", person.getPersonId());
+        model.addAttribute("title", "Morgue Actions");
+        PersonAttribute givenName, middleName, familyName;
+
+    }
 }
+
+
+
+
 

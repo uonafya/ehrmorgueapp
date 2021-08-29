@@ -21,7 +21,7 @@
    jQuery(function (){
       jQuery("#deadDetails").DataTable();
        jQuery('#deadDetails').on( 'click', 'tr', function () {
-           window.location = ui.pageLink("morgueapp", "morgueActions")
+           window.location = ui.pageLink("morgueapp", "morgueActions",{"personId" : items=[2] })
        } );
    });
 </script>
@@ -105,6 +105,7 @@
     <script type="text/javascript">
         jQuery(function() {
             jQuery('input[name="query"]').focus();
+
         });
     </script>
 

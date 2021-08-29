@@ -203,13 +203,14 @@ form input[type="radio"] {
 <div class="ui-icon-person-header new-patient-header">
     <div class="demographics">
         <h1 class="name">
-            <span id="surname"><em>surname</em></span>
-            <span id="othname"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<em>other names</em>
-            </span>
+            <h1 class="name">
+                <span id="surname">${person.familyName},<em>surname</em></span>
+                <span id="othername">${person.givenName} ${person.middleName ? person.middleName : ''} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<em>other names</em>
+                </span>
 
             <span class="gender-age">
                 <span>
-
+                    ${gender}
                 </span>
                 <span id="agename"></span>
             </span>
@@ -221,6 +222,9 @@ form input[type="radio"] {
         </div>
         <div class="identifiers">
             <em>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Person ID</em>
+            <span>
+            ${personId}
+            </span>
             <br>
 
         </div>
