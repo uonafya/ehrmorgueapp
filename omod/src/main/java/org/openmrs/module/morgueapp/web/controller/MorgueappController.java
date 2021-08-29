@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * 'module/${rootArtifactid}/${rootArtifactid}Link.form'.
  */
 @Controller("${rootrootArtifactid}.MorgueappController")
-@RequestMapping(value = "module/${rootArtifactid}/${rootArtifactid}.form")
+///@RequestMapping(value = "module/${rootArtifactid}/${rootArtifactid}.form")
 public class MorgueappController {
 	
 	/** Logger for this class and subclasses */
@@ -39,17 +39,17 @@ public class MorgueappController {
 	UserService userService;
 	
 	/** Success form view name */
-	private final String VIEW = "/module/${rootArtifactid}/${rootArtifactid}";
+	//private final String VIEW = "/module/${rootArtifactid}/${rootArtifactid}";
 	
 	/**
 	 * Initially called after the getUsers method to get the landing form name
 	 * 
 	 * @return String form view name
 	 */
-	@RequestMapping(method = RequestMethod.GET)
-	public String onGet() {
-		return VIEW;
-	}
+	//@RequestMapping(method = RequestMethod.GET)
+	//public String onGet() {
+	//	return VIEW;
+	//}
 	
 	/**
 	 * All the parameters are optional based on the necessity
@@ -60,7 +60,7 @@ public class MorgueappController {
 	 * @return
 	 */
 	@RequestMapping(method = RequestMethod.POST)
-	public String onPost(HttpSession httpSession, @ModelAttribute("anyRequestObject") Object anyRequestObject,
+	/*public String onPost(HttpSession httpSession, @ModelAttribute("anyRequestObject") Object anyRequestObject,
 	        BindingResult errors) {
 		
 		if (errors.hasErrors()) {
@@ -68,7 +68,7 @@ public class MorgueappController {
 		}
 		
 		return VIEW;
-	}
+	}*/
 	
 	/**
 	 * This class returns the form backing object. This can be a string, a boolean, or a normal java

@@ -9,16 +9,17 @@
  */
 package org.openmrs.module.morgueapp.api.impl;
 
-import org.openmrs.api.APIException;
+import org.openmrs.Person;
 import org.openmrs.api.UserService;
 import org.openmrs.api.impl.BaseOpenmrsService;
-import org.openmrs.module.morgueapp.Item;
 import org.openmrs.module.morgueapp.api.MorgueappService;
 import org.openmrs.module.morgueapp.api.dao.MorgueappDao;
 
+import java.util.List;
+
 public class MorgueappServiceImpl extends BaseOpenmrsService implements MorgueappService {
 	
-	MorgueappDao dao;
+	private  MorgueappDao dao;
 	
 	UserService userService;
 	
@@ -35,18 +36,9 @@ public class MorgueappServiceImpl extends BaseOpenmrsService implements Morgueap
 	public void setUserService(UserService userService) {
 		this.userService = userService;
 	}
-	
+
 	@Override
-	public Item getItemByUuid(String uuid) throws APIException {
-		return dao.getItemByUuid(uuid);
-	}
-	
-	@Override
-	public Item saveItem(Item item) throws APIException {
-		if (item.getOwner() == null) {
-			item.setOwner(userService.getUser(1));
-		}
-		
-		return dao.saveItem(item);
+	public List<Person> getDeadPeople() {
+		return dao.getDeadPeople();
 	}
 }
