@@ -9,16 +9,7 @@
  */
 package org.openmrs.module.morgueapp.api.dao;
 
-import org.hibernate.Criteria;
 import org.openmrs.Person;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
-import org.hibernate.Criteria;
-import org.hibernate.Query;
-import org.hibernate.SessionFactory;
-import org.hibernate.classic.Session;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Restrictions;
 
 import java.util.List;
 
