@@ -18,12 +18,6 @@
 
 %>
 
-%{--<script>--}%
-%{--   jQuery(function (){--}%
-%{--      jQuery("#deadDetails").DataTable();--}%
-%{--   });--}%
-%{--</script>--}%
-<!-- Include the required jQuery library -->
 
 <script>
     jQuery(function () {
@@ -36,7 +30,6 @@
             jQuery(tabToShow).show();
         });
     });
-
     jQuery(function (){
         // Set up the tabs functionality with horizontal orientation
         jQuery("#tabs").tabs({
