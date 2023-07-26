@@ -1,5 +1,6 @@
 <%
     ui.decorateWith("kenyaemr", "standardPage")
+
     ui.includeJavascript("ehrconfigs", "jquery-ui-1.9.2.custom.min.js")
     ui.includeJavascript("ehrconfigs", "underscore-min.js")
     ui.includeJavascript("ehrconfigs", "knockout-3.4.0.js")
@@ -7,19 +8,16 @@
     ui.includeJavascript("ehrconfigs", "jquery.simplemodal.1.4.4.min.js")
     ui.includeJavascript("ehrconfigs", "jquery.toastmessage.js")
     ui.includeJavascript("ehrconfigs", "jquery.dataTables.min.js")
+    ui.includeCss("ehrconfigs", "onepcssgrid.css")
+    ui.includeJavascript("ehrconfigs", "jq.browser.select.js")
     ui.includeJavascript("ehrconfigs", "moment.min.js")
     ui.includeCss("ehrconfigs", "jquery-ui-1.9.2.custom.min.css")
     ui.includeCss("ehrconfigs", "referenceapplication.css")
     ui.includeCss("uicommons", "datatables/dataTables_jui.css")
     ui.includeCss("ehrconfigs", "jquery.toastmessage.css")
+
 %>
 
-%{--<script>--}%
-%{--   jQuery(function (){--}%
-%{--      jQuery("#deadDetails").DataTable();--}%
-%{--   });--}%
-%{--</script>--}%
-<!-- Include the required jQuery library -->
 
 <script>
     jQuery(function () {
@@ -30,6 +28,13 @@
 
             var tabToShow = jQuery(this).closest("table").attr("id") === "deadDetails" ? "#morgue-patients" : "#morgue-queue";
             jQuery(tabToShow).show();
+        });
+    });
+    jQuery(function (){
+        // Set up the tabs functionality with horizontal orientation
+        jQuery("#tabs").tabs({
+            // Set the tab orientation to "horizontal"
+            orientation: "horizontal"
         });
     });
 </script>
@@ -87,6 +92,58 @@
 #morgue-patients:target, #morgue-queue:target {
     display: block;
 }
+.ke-panelbar{
+    background: #f9f9f9 none repeat scroll 0 0;
+}
+
+#tabs {
+    display: inline-block;
+}
+
+#tabs ul {
+    /* For horizontal tabs, set the "display" property to "inline-block" */
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+}
+
+#tabs ul li {
+    /* For horizontal tabs, set the "display" property to "inline-block" */
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+#tabs ul li a {
+    /* Add styles for tab links as needed */
+    display: inline-block;
+    padding: 10px 20px;
+    text-decoration: none;
+    border: 1px solid #ccc;
+    border-radius: 5px 5px 0 0;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+#tabs ul li a:hover {
+    /* Add hover styles for tab links as needed */
+    background-color: #eee;
+}
+
+#tabs .ui-tabs-panel {
+    /* Add styles for tab content panels as needed */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 0 0 5px 5px;
+    background-color: #f9f9f9;
+    display: none; /* Hide tab content by default */
+}
+
+#tabs .ui-tabs-panel.ui-tabs-active {
+    /* Show the active tab content */
+    display: block;
+}
 </style>
 
 <div class="example">
@@ -127,8 +184,8 @@
 
     <div class="clear"></div>
 
-    <div id="tabs">
-        <ul class="ke-panelbar" style="text-align: left">
+    <div id="tabs" style="margin-top: 40px!important;>
+        <ul class="ke-panelbar">
             <li><a href="#morgue-patients">Admitted</a></li>
             <li><a href="#morgue-queue">Admission Queue</a></li>
             <li id="refresher" class="ui-state-default">
