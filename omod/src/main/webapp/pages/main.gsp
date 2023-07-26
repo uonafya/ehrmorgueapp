@@ -14,10 +14,24 @@
     ui.includeCss("ehrconfigs", "jquery.toastmessage.css")
 %>
 
+%{--<script>--}%
+%{--   jQuery(function (){--}%
+%{--      jQuery("#deadDetails").DataTable();--}%
+%{--   });--}%
+%{--</script>--}%
+<!-- Include the required jQuery library -->
+
 <script>
-   jQuery(function (){
-      jQuery("#deadDetails").DataTable();
-   });
+    jQuery(function () {
+
+        jQuery("#deadDetails tbody tr").click(function () {
+
+            jQuery("#morgue-patients, #morgue-queue").hide();
+
+            var tabToShow = jQuery(this).closest("table").attr("id") === "deadDetails" ? "#morgue-patients" : "#morgue-queue";
+            jQuery(tabToShow).show();
+        });
+    });
 </script>
 
 <style>
@@ -67,6 +81,12 @@
     float: right;
     margin-top: 5px;
 }
+#morgue-patients, #morgue-queue {
+    display: none;
+}
+#morgue-patients:target, #morgue-queue:target {
+    display: block;
+}
 </style>
 
 <div class="example">
@@ -108,7 +128,7 @@
     <div class="clear"></div>
 
     <div id="tabs">
-        <ul>
+        <ul class="ke-panelbar" style="text-align: left">
             <li><a href="#morgue-patients">Admitted</a></li>
             <li><a href="#morgue-queue">Admission Queue</a></li>
             <li id="refresher" class="ui-state-default">
