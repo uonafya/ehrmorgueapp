@@ -149,13 +149,6 @@
                 <version>${metadatadeployVersion}</version>
                 <scope>provided</scope>
             </dependency>
-
-            <dependency>
-                <groupId>org.openmrs.module</groupId>
-                <artifactId>appui-omod</artifactId>
-                <version>1.4</version>
-                <scope>provided</scope>
-            </dependency>
             <dependency>
                 <groupId>org.openmrs.module</groupId>
                 <artifactId>legacyui-api</artifactId>
