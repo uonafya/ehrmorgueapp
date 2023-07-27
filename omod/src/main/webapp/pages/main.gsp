@@ -18,6 +18,11 @@
 
 %>
 
+<script>
+jq(document).ready(function () {
+        jq("#itabs").tabs();
+    });
+</script>
 
 <script>
     jQuery(function () {
@@ -30,13 +35,7 @@
             jQuery(tabToShow).show();
         });
     });
-    jQuery(function (){
-        // Set up the tabs functionality with horizontal orientation
-        jQuery("#tabs").tabs({
-            // Set the tab orientation to "horizontal"
-            orientation: "horizontal"
-        });
-    });
+
 </script>
 
 <style>
@@ -184,7 +183,7 @@
 
     <div class="clear"></div>
 
-    <div id="tabs" style="margin-top: 40px!important;>
+    <div id="itabs" style="margin-top: 40px!important;>
         <ul class="ke-panelbar">
             <li><a href="#morgue-patients">Admitted</a></li>
             <li><a href="#morgue-queue">Admission Queue</a></li>
