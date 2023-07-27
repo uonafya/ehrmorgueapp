@@ -1,44 +1,17 @@
 <%
     ui.decorateWith("kenyaemr", "standardPage")
-
-    ui.includeJavascript("ehrconfigs", "jquery-ui-1.9.2.custom.min.js")
-    ui.includeJavascript("ehrconfigs", "underscore-min.js")
-    ui.includeJavascript("ehrconfigs", "knockout-3.4.0.js")
-    ui.includeJavascript("ehrconfigs", "emr.js")
-    ui.includeJavascript("ehrconfigs", "jquery.simplemodal.1.4.4.min.js")
-    ui.includeJavascript("ehrconfigs", "jquery.toastmessage.js")
     ui.includeJavascript("ehrconfigs", "jquery.dataTables.min.js")
-    ui.includeCss("ehrconfigs", "onepcssgrid.css")
-    ui.includeJavascript("ehrconfigs", "jq.browser.select.js")
-    ui.includeJavascript("ehrconfigs", "moment.min.js")
-    ui.includeCss("ehrconfigs", "jquery-ui-1.9.2.custom.min.css")
+    ui.includeCss("ehrconfigs", "jquery.dataTables.min.css")
     ui.includeCss("ehrconfigs", "referenceapplication.css")
-    ui.includeCss("uicommons", "datatables/dataTables_jui.css")
-    ui.includeCss("ehrconfigs", "jquery.toastmessage.css")
-
 %>
 
 
-<script>
-jq(document).ready(function () {
-        jq("#itabs").tabs();
+<script type="text/javascript">
+    jq(document).ready(function () {
+        jq("#dtabs").tabs();
+        jq("#deadDetails").DataTable();
     });
 </script>
-
-<script>
-    jQuery(function () {
-
-        jQuery("#deadDetails tbody tr").click(function () {
-
-            jQuery("#morgue-patients, #morgue-queue").hide();
-
-            var tabToShow = jQuery(this).closest("table").attr("id") === "deadDetails" ? "#morgue-patients" : "#morgue-queue";
-            jQuery(tabToShow).show();
-        });
-    });
-
-</script>
-
 <style>
 .toast-item {
     background-color: #222;
@@ -181,52 +154,49 @@ jq(document).ready(function () {
         <em>Current Time:</em>
         <span>${date}</span>
     </div>
-
     <div class="clear"></div>
+</div>
 
-    <div id="itabs" style="margin-top: 40px!important;>
-        <ul class="ke-panelbar">
-            <li><a href="#morgue-patients">Admitted</a></li>
-            <li><a href="#morgue-queue">Admission Queue</a></li>
-            <li id="refresher" class="ui-state-default">
-                <a class="button confirm" style="color:#fff">
-                    <i class="icon-refresh"></i>
-                    Refresh Patients
-                </a>
-            </li>
-        </ul>
+<div id="dtabs">
+    <ul>
+        <li><a href="#morgue-patients">Admitted</a></li>
+        <li><a href="#morgue-queue">Admission Queue</a></li>
+        <li id="refresher" class="ui-state-default">
+            <a class="button confirm" style="color:#fff">
+                <i class="icon-refresh"></i>
+                Refresh Patients
+            </a>
+        </li>
+    </ul>
 
-        <div id="morgue-patients">
-            <table id="deadDetails">
-                <thead>
-                <tr>
-                    <th>Person ID</th>
-                    <th>Name</th>
-                    <th>Date of Death</th>
-                    <th>Cause of Death(Coded)</th>
-
-
-                </tr>
-                </thead>
-                <tbody>
-                <% deadList.each {%>
-                <tr>
-                    <td>${it.personId}</td>
-                    <td>${it.names.givenName}</td>
-                    <td>${it.deathDate}</td>
-                    <td>${it.causeOfDeath.names.name}</td>
-
-                </tr>
-
-                <%}%>
-                </tbody>
-            </table>
-        </div>
-
-        <div id="morgue-queue">
-            TO-DO
-        </div>
+    <div id="morgue-patients">
+        <table id="deadDetails">
+            <thead>
+            <tr>
+                <th>Person ID</th>
+                <th>Name</th>
+                <th>Date of Death</th>
+                <th>Cause of Death(Coded)</th>
 
 
+            </tr>
+            </thead>
+            <tbody>
+            <% deadList.each {%>
+            <tr>
+                <td>${it.personId}</td>
+                <td>${it.names.givenName}</td>
+                <td>${it.deathDate}</td>
+                <td>${it.causeOfDeath.names.name}</td>
+
+            </tr>
+
+            <%}%>
+            </tbody>
+        </table>
+    </div>
+
+    <div id="morgue-queue">
+        TO-DO
     </div>
 </div>
