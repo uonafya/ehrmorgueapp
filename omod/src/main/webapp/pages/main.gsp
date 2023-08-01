@@ -159,24 +159,20 @@
 
 <div id="dtabs">
     <ul>
-        <li><a href="#morgue-patients">Admitted</a></li>
-        <li><a href="#morgue-queue">Admission Queue</a></li>
-        <li id="refresher" class="ui-state-default">
-            <a class="button confirm" style="color:#fff">
-                <i class="icon-refresh"></i>
-                Refresh Patients
-            </a>
-        </li>
+        <li><a href="#morgue-patients">Admission Queue</a></li>
+        <li><a href="#morgue-queue">Admitted Bodies</a></li>
     </ul>
 
     <div id="morgue-patients">
         <table id="deadDetails">
             <thead>
             <tr>
-                <th>Person ID</th>
-                <th>Name</th>
-                <th>Date of Death</th>
+                <th>Identifier</th>
+                <th>Names</th>
+                <th>Date and Time of Death</th>
                 <th>Cause of Death(Coded)</th>
+                <th>Created by</th>
+                <th>Date Created</th>
 
 
             </tr>
@@ -184,10 +180,12 @@
             <tbody>
             <% deadList.each {%>
             <tr>
-                <td>${it.personId}</td>
-                <td>${it.names.givenName}</td>
-                <td>${it.deathDate}</td>
-                <td>${it.causeOfDeath.names.name}</td>
+                <td>${it.identifier}</td>
+                <td>${it.names}</td>
+                <td>${it.dateAndTimeOfDeath}</td>
+                <td>${it.causeOfDeath}</td>
+                <td>${it.createdBy}</td>
+                <td>${it.dateCreated}</td>
 
             </tr>
 
@@ -197,6 +195,6 @@
     </div>
 
     <div id="morgue-queue">
-        TO-DO
+        ${ ui.includeFragment("morgueapp", "morgueQueue") }
     </div>
 </div>

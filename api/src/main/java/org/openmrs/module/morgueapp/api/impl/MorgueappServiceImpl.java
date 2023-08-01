@@ -13,32 +13,22 @@ import org.openmrs.Person;
 import org.openmrs.api.UserService;
 import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.morgueapp.api.MorgueappService;
-import org.openmrs.module.morgueapp.api.dao.MorgueappDao;
 
 import java.util.List;
 
-public class MorgueappServiceImpl extends BaseOpenmrsService implements MorgueappService {
-	
-	private  MorgueappDao dao;
+public class MorgueappServiceImpl extends BaseOpenmrsService {
+
 	
 	UserService userService;
 	
 	/**
 	 * Injected in moduleApplicationContext.xml
 	 */
-	public void setDao(MorgueappDao dao) {
-		this.dao = dao;
-	}
 	
 	/**
 	 * Injected in moduleApplicationContext.xml
 	 */
 	public void setUserService(UserService userService) {
 		this.userService = userService;
-	}
-
-	@Override
-	public List<Person> getDeadPeople() {
-		return dao.getDeadPeople();
 	}
 }
