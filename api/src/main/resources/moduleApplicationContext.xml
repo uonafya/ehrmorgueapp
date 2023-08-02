@@ -40,16 +40,16 @@
         <constructor-arg value="morgueapp:apps/morgueapp.png" />
         <constructor-arg value="3005" />
     </bean>
-    <bean parent="serviceContext">
+    <!--<bean parent="serviceContext">
         <property name="moduleService">
             <list>
-                <value>org.openmrs.module.morgueapp.api.MorgueappService</value> <!-- Your service's interface class -->
+                <value>org.openmrs.module.morgueapp.api.MorgueappService</value> &lt;!&ndash; Your service's interface class &ndash;&gt;
                 <bean class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
                     <property name="transactionManager"><ref bean="transactionManager"/></property>
                     <property name="target">
-                        <bean class="org.openmrs.module.morgueapp.api.impl.MorgueappServiceImpl"> <!-- Your service's concrete class -->
-                            <property name="dao"> <!-- Name of the DAO property on your ServiceImpl -->
-                                <bean class="org.openmrs.module.morgueapp.api.dao.hibernate.HibernateMorgueappDao"> <!-- Your DAO's concrete class -->
+                        <bean class="org.openmrs.module.morgueapp.api.impl.MorgueappServiceImpl"> &lt;!&ndash; Your service's concrete class &ndash;&gt;
+                            <property name="dao"> &lt;!&ndash; Name of the DAO property on your ServiceImpl &ndash;&gt;
+                                <bean class="org.openmrs.module.morgueapp.api.dao.hibernate.HibernateMorgueappDao"> &lt;!&ndash; Your DAO's concrete class &ndash;&gt;
                                     <property name="sessionFactory"><ref bean="sessionFactory"/></property>
                                 </bean>
                             </property>
@@ -64,5 +64,5 @@
                 </bean>
             </list>
         </property>
-    </bean>
+    </bean>-->
 </beans>

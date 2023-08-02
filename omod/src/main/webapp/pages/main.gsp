@@ -173,6 +173,7 @@
                 <th>Cause of Death(Coded)</th>
                 <th>Created by</th>
                 <th>Date Created</th>
+                <th>Actions</th>
 
 
             </tr>
@@ -186,6 +187,7 @@
                 <td>${it.causeOfDeath}</td>
                 <td>${it.createdBy}</td>
                 <td>${it.dateCreated}</td>
+                <td>&nbsp;</td>
 
             </tr>
 
