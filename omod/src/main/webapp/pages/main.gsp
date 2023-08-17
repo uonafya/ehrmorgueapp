@@ -9,7 +9,7 @@
 <script type="text/javascript">
     jq(document).ready(function () {
         jq("#dtabs").tabs();
-        jq("#deadDetails").DataTable();
+        var tbl = jq("#deadDetails").DataTable();
         var enrollBodyDialog = emr.setupConfirmationDialog({
             dialogOpts: {
                 overlayClose: false,
@@ -38,10 +38,42 @@
             }
         });
 
+        var admitBodyDialog = emr.setupConfirmationDialog({
+            dialogOpts: {
+                overlayClose: false,
+                close: true
+            },
+            selector: '#admit-body-details-dialog',
+            actions: {
+                confirm: function () {
+                    jq.getJSON('${ui.actionLink("morgueapp", "morgueDetail", "admitBodyDetails")}',
+                        {
+                            'countyCode': jq("#countyCode").val().trim(),
+                            'countyName': jq("#countyName").val().trim(),
+                            'website': jq("#website").val().trim(),
+                            'address': jq("#address").val(),
+                            'email': jq("#email").val(),
+                            'phone': jq("#phone").val(),
+                        }
+                    ).success(function (data) {
+                        admitBodyDialog.close();
+                        location.reload();
+                    });
+                },
+                cancel: function () {
+                    admitBodyDialog.close();
+                }
+            }
+        });
+
         jq("#refresher").on("click", function (e) {
             e.preventDefault();
             enrollBodyDialog.show();
         });
+        jq('#deadDetails tbody').on('click', 'tr', function (e) {
+              e.preventDefault();
+              admitBodyDialog.show();
+            });
     });
 </script>
 <style>
@@ -225,7 +257,9 @@
                 <td>${it.causeOfDeath}</td>
                 <td>${it.createdBy}</td>
                 <td>${it.dateCreated}</td>
-                <td>&nbsp;</td>
+                <td>
+                  <button id="enrollBtn" class="task">Admit</button>
+                </td>
 
             </tr>
 
@@ -256,6 +290,11 @@
       </li>
     </ul>
   </form>
+  <span class="button confirm right">Confirm</span>
+  <span class="button cancel">Cancel</span>
+</div>
+
+<div id="admit-body-details-dialog" class="dialog">
   <span class="button confirm right">Confirm</span>
   <span class="button cancel">Cancel</span>
 </div>
