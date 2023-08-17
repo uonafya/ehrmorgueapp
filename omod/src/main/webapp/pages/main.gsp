@@ -10,6 +10,38 @@
     jq(document).ready(function () {
         jq("#dtabs").tabs();
         jq("#deadDetails").DataTable();
+        var enrollBodyDialog = emr.setupConfirmationDialog({
+            dialogOpts: {
+                overlayClose: false,
+                close: true
+            },
+            selector: '#enroll-body-details-dialog',
+            actions: {
+                confirm: function () {
+                    jq.getJSON('${ui.actionLink("morgueapp", "morgueDetail", "enrollBodyDetails")}',
+                        {
+                            'countyCode': jq("#countyCode").val().trim(),
+                            'countyName': jq("#countyName").val().trim(),
+                            'website': jq("#website").val().trim(),
+                            'address': jq("#address").val(),
+                            'email': jq("#email").val(),
+                            'phone': jq("#phone").val(),
+                        }
+                    ).success(function (data) {
+                        enrollBodyDialog.close();
+                        location.reload();
+                    });
+                },
+                cancel: function () {
+                    enrollBodyDialog.close();
+                }
+            }
+        });
+
+        jq("#refresher").on("click", function (e) {
+            e.preventDefault();
+            enrollBodyDialog.show();
+        });
     });
 </script>
 <style>
@@ -146,8 +178,8 @@
     </div>
 
     <div class="identifiers">
-        <em>&nbsp; &nbsp; Patients:</em>
-        <span> waiting</span>
+        <em>&nbsp; &nbsp; Capacity:</em>
+        <span>x/y</span>
     </div>
 
     <div class="identifiers">
@@ -161,6 +193,12 @@
     <ul>
         <li><a href="#morgue-patients">Admission Queue</a></li>
         <li><a href="#morgue-queue">Admitted Bodies</a></li>
+        <li id="refresher" class="ui-state-default">
+            <a class="button confirm" style="color:#fff">
+                <i class="icon-refresh"></i>
+                Enroll Body
+            </a>
+        </li>
     </ul>
 
     <div id="morgue-patients">
@@ -199,4 +237,25 @@
     <div id="morgue-queue">
         ${ ui.includeFragment("morgueapp", "morgueQueue") }
     </div>
+</div>
+<div id="enroll-body-details-dialog" class="dialog">
+
+  <div class="dialog-header">
+      <i class="icon-folder-open"></i>
+      <h3>Body Details</h3>
+  </div>
+  <form class="dialog-content">
+    <ul>
+      <li>
+          <label for="fName">First Name</label>
+          <input name="fName" id="fName" type="text" />
+      </li>
+      <li>
+          <label for="lName">Last Name</label>
+          <input name="lName" id="lName" type="text" />
+      </li>
+    </ul>
+  </form>
+  <span class="button confirm right">Confirm</span>
+  <span class="button cancel">Cancel</span>
 </div>
