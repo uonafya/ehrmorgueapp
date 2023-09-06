@@ -4,7 +4,7 @@
         jq('#unitsTable').DataTable();
     });
 </script>
-<table id="formulationsTable">
+<table id="unitsTable">
     <thead>
     <tr>
         <th>Unit Name</th>
