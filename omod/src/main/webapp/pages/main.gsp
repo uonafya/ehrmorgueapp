@@ -1,16 +1,17 @@
 <%
     ui.decorateWith("kenyaemr", "standardPage")
     ui.includeJavascript("ehrconfigs", "jquery.dataTables.min.js")
-    ui.includeJavascript("ehrconfigs", "bootstrap.min.js")
     ui.includeJavascript("ehrconfigs", "emr.js")
     ui.includeJavascript("ehrconfigs", "jquery.simplemodal.1.4.4.min.js")
     ui.includeCss("ehrconfigs", "jquery.dataTables.min.css")
     ui.includeCss("ehrconfigs", "referenceapplication.css")
+    ui.includeCss("ehrconfigs", "onepcssgrid.css")
+    ui.includeCss("ehrconfigs", "custom.css")
 %>
 
 
 <script type="text/javascript">
-    jq(document).ready(function () {
+    jq(function () {
         jq("#dtabs").tabs();
         var tbl = jq("#deadDetails").DataTable();
         var enrollBodyDialog = emr.setupConfirmationDialog({
@@ -51,12 +52,15 @@
                 confirm: function () {
                     jq.getJSON('${ui.actionLink("morgueapp", "morgueDetail", "admitBodyDetails")}',
                         {
-                            'countyCode': jq("#countyCode").val().trim(),
-                            'countyName': jq("#countyName").val().trim(),
-                            'website': jq("#website").val().trim(),
-                            'address': jq("#address").val(),
-                            'email': jq("#email").val(),
-                            'phone': jq("#phone").val(),
+                            'patientName': jq("#patientName").val().trim(),
+                            'dateOfDeath': jq("#dateOfDeath").val().trim(),
+                            'dateOfAdmission': jq("#dateOfAdmission").val().trim(),
+                            'receivedBy': jq("#receivedBy").val(),
+                            'propertyWithBody': jq("#propertyWithBody").val(),
+                            'identificationTagNo': jq("#identificationTagNo").val(),
+                            'broughtBy': jq("#broughtBy").val(),
+                            'compartment': jq("#compartment").val(),
+                            'consent': jq("#consent").val(),
                         }
                     ).success(function (data) {
                         admitBodyDialog.close();
@@ -73,10 +77,10 @@
             e.preventDefault();
             enrollBodyDialog.show();
         });
-        jq('#deadDetails tbody').on('click', 'tr', function (e) {
-              e.preventDefault();
-              admitBodyDialog.show();
-            });
+        jq("#enrollBtn").on("click", function(e) {
+            e.preventDefault();
+            admitBodyDialog.show();
+        });
     });
 </script>
 <style>
@@ -228,13 +232,13 @@
     <ul>
         <li><a href="#morgue-patients">Admission Queue</a></li>
         <li><a href="#morgue-queue">Admitted Bodies</a></li>
-        <li id="refresher" class="ui-state-default">
-            <a class="button confirm" style="color:#fff">
-                <i class="icon-refresh"></i>
-                Enroll Body
-            </a>
-        </li>
     </ul>
+    <div style="float: right;">
+        <button id="refresher" class="confirm">
+            <i class="icon-refresh"></i>
+            Enroll Body
+        </button>
+    </div>
 
     <div id="morgue-patients">
         <table id="deadDetails">
@@ -275,29 +279,115 @@
         ${ ui.includeFragment("morgueapp", "morgueQueue") }
     </div>
 </div>
-<div id="enroll-body-details-dialog" class="dialog">
+<div id="enroll-body-details-dialog" class="dialog" style="display:none;">
+    <div class="dialog-header">
+        <i class="icon-folder-open"></i>
 
-  <div class="dialog-header">
-      <i class="icon-folder-open"></i>
-      <h3>Body Details</h3>
-  </div>
-  <form class="dialog-content">
-    <ul>
-      <li>
-          <label for="fName">First Name</label>
-          <input name="fName" id="fName" type="text" />
-      </li>
-      <li>
-          <label for="lName">Last Name</label>
-          <input name="lName" id="lName" type="text" />
-      </li>
-    </ul>
-  </form>
-  <span class="button confirm right">Confirm</span>
-  <span class="button cancel">Cancel</span>
+        <h3>Admit Brought In Body</h3>
+    </div>
+    <div class="dialog-content">
+        <ul>
+            <li>
+                <label>Unit Name<span style="color:red">*</span></label>
+                <input type="text" name="morgueName" id="morgueName" style="width: 90%!important;" />
+            </li>
+            <li>
+                <label>Capacity<span style="color:red">*</span></label>
+                <input type="number" name="strength" id="strength"/>
+            </li>
+            <li>
+                <label>Status<span style="color:red">*</span></label>
+                <select id="retired" name="retired">
+                    <option value="0">Active</option>
+                    <option value="1">Inactive</option>
+                </select>
+            </li>
+            <li>
+                <label>Description<span style="color:red;">*</span></label>
+                <textarea name="description" id="description" style="width: 90%!important;" cols="30" rows="4">
+                </textarea>
+
+            </li>
+        </ul>
+    </div>
+    <div class="onerow">
+        <button class="button confirm right">Confirm</button>
+        <button class="button cancel">Cancel</button>
+    </div>
 </div>
 
 <div id="admit-body-details-dialog" class="dialog">
-  <span class="button confirm right">Confirm</span>
-  <span class="button cancel">Cancel</span>
+    <div class="dialog-header">
+        <i class="icon-folder-open"></i>
+
+        <h3>Admit New Body</h3>
+    </div>
+    <div class="dialog-content">
+        <table>
+            <tr>
+                <td>
+                    <label for="patientName">Patient Name<span>*</span></label>
+                </td>
+                <td>
+                    <input type="text" name="patientName" id="patientName">
+                </td>
+            </tr>
+            <tr>
+                <td><label for="dateOfDeath">Date Of Death<span>*</span></label></td>
+                <td><input type="datetime-local" name="dateOfDeath" id="dateOfDeath"></td>
+            </tr>
+
+            <tr>
+                <td><label>Admitted From<span>*</span></label></td>
+                <td><select data-bind="options: \$root.inpatientWards, optionsText: 'label', value: admitTo" style="width: 400px !important; float: right;"></select></td>
+            </tr>
+
+            <tr>
+                <td><label for="dateOfAdmission">Date Of Admission<span>*</span></label></td>
+                <td><input type="datetime-local" name="dateOfAdmission" id="dateOfAdmission"></td>
+            </tr>
+            <tr>
+                <td><label for="admittedUnit">Admitted Unit<span>*</span></label></td>
+                <td><input name="admittedUnit" id="admittedUnit" type="text"></td>
+
+            </tr>
+
+            <tr>
+                <td><label for="receivedBy">Received By</label></td>
+                <td> <input name="receivedBy" id="receivedBy" type="text"></td>
+            </tr>
+
+            <tr>
+                <td><label for="propertyWithBody">Property With Body</label></td>
+                <td><input name="propertyWithBody" id="propertyWithBody" type="text"></td>
+            </tr>
+
+            <tr>
+                <td><label for="identificationTagNo">Identification Tag No<span>*</span></label></td>
+                <td><input name="identificationTagNo" id="identificationTagNo" type="text"></td>
+            </tr>
+
+            <tr>
+                <td><label for="broughtBy">Brougth By<span>*</span></label></td>
+                <td><input name="broughtBy" id="broughtBy" type="text"></td>
+            </tr>
+
+            <tr>
+                <td><label for="compartment">Compartment<span>*</span></label></td>
+                <td><input name="compartment" id="compartment" type="text"></td>
+
+            </tr>
+
+            <tr>
+                <td> <label>Consent<span style="color:red;">*</span></label></td>
+                <td><textarea name="consent" id="consent" style="width: 90%!important;" cols="30" rows="4">
+                </textarea></td>
+            </tr>
+
+        </table>
+    </div>
+    <div class="onerow">
+        <button class="button confirm right">Confirm</button>
+        <button class="button cancel">Cancel</button>
+    </div>
 </div>
