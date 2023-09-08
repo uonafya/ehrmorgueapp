@@ -50,17 +50,21 @@
             selector: '#admit-body-details-dialog',
             actions: {
                 confirm: function () {
+                    var formulations = jq("#admittedUnit").val();
                     jq.getJSON('${ui.actionLink("morgueapp", "morgueDetail", "admitBodyDetails")}',
                         {
-                            'patientName': jq("#patientName").val().trim(),
+                            'patient': jq("#patient").val().trim(),
                             'dateOfDeath': jq("#dateOfDeath").val().trim(),
-                            'dateOfAdmission': jq("#dateOfAdmission").val().trim(),
+                            'bodyType': jq("#bodyType").val().trim(),
+                            'dateOfAdmission': jq("#summaryAdmissionDate-field").val().trim(),
                             'receivedBy': jq("#receivedBy").val(),
                             'propertyWithBody': jq("#propertyWithBody").val(),
                             'identificationTagNo': jq("#identificationTagNo").val(),
                             'broughtBy': jq("#broughtBy").val(),
-                            'compartment': jq("#compartment").val(),
+                            'compartmentNo': jq("#compartmentNo").val(),
                             'consent': jq("#consent").val(),
+                            'patientId':jq("#patientId").val(),
+                            'admittedUnit':jq("#multiple").val()
                         }
                     ).success(function (data) {
                         admitBodyDialog.close();
@@ -77,11 +81,26 @@
             e.preventDefault();
             enrollBodyDialog.show();
         });
-        jq("#enrollBtn").on("click", function(e) {
-            e.preventDefault();
+        jq('#deadDetails tbody').on('click', 'tr', function () {
+            var table =  jq("#deadDetails").DataTable();
+
+            var info = table.row(this).data();
+            jq("#patient").val(info[2])
+            jq("#dateOfDeath").val(info[3])
+            jq("#patientId").val(info[0])
             admitBodyDialog.show();
         });
     });
+    jq.getJSON('${ ui.actionLink("morgueapp", "MorgueDetail", "fetchUnitDetails")}',
+        {
+        }
+    ).success(function (data) {
+        for (var index = 0; index <= data.length; index++) {
+            jq('#admittedUnit').append('<option value="' + data[index].ehrMorgueStrengthId + '">' + data[index].morgueName + '-' + data[index].strength + '</option>');
+        }
+    });
+
+
 </script>
 <style>
 .toast-item {
@@ -244,6 +263,7 @@
         <table id="deadDetails">
             <thead>
             <tr>
+                <th style="display: none">patient_id</th>
                 <th>Identifier</th>
                 <th>Names</th>
                 <th>Date and Time of Death</th>
@@ -258,6 +278,7 @@
             <tbody>
             <% deadList.each {%>
             <tr>
+                <td style="display: none">${it.patientId}</td>
                 <td>${it.identifier}</td>
                 <td>${it.names}</td>
                 <td>${it.dateAndTimeOfDeath}</td>
@@ -324,12 +345,13 @@
     </div>
     <div class="dialog-content">
         <table>
+            <input style="display: none" id="patientId">
             <tr>
                 <td>
-                    <label for="patientName">Patient Name<span>*</span></label>
+                    <label for="patient">Patient Name<span>*</span></label>
                 </td>
                 <td>
-                    <input type="text" name="patientName" id="patientName">
+                    <input type="text" name="patient" id="patient">
                 </td>
             </tr>
             <tr>
@@ -338,18 +360,18 @@
             </tr>
 
             <tr>
-                <td><label>Admitted From<span>*</span></label></td>
-                <td><select data-bind="options: \$root.inpatientWards, optionsText: 'label', value: admitTo" style="width: 400px !important; float: right;"></select></td>
+                <td><label for="bodyType">Admitted From<span>*</span></label></td>
+                <td><input type="text" name="bodyType" id="bodyType"></td>
             </tr>
 
             <tr>
-                <td><label for="dateOfAdmission">Date Of Admission<span>*</span></label></td>
-                <td><input type="datetime-local" name="dateOfAdmission" id="dateOfAdmission"></td>
+                <td><label>Date Of Admission<span>*</span></label></td>
+                <td>${ui.includeFragment("uicommons", "field/datetimepicker", [formFieldName: 'dateOfAdmission', id: 'summaryAdmissionDate', label: '', useTime: true, defaultToday: true, class: ['newdtp']])}
+                </td>
             </tr>
             <tr>
-                <td><label for="admittedUnit">Admitted Unit<span>*</span></label></td>
-                <td><input name="admittedUnit" id="admittedUnit" type="text"></td>
-
+                <td><label>Admitted Unit<span>*</span></label></td>
+                <td><select name="admittedUnit" id="admittedUnit"></select></td>
             </tr>
 
             <tr>
@@ -368,14 +390,13 @@
             </tr>
 
             <tr>
-                <td><label for="broughtBy">Brougth By<span>*</span></label></td>
+                <td><label for="broughtBy">Brought By<span>*</span></label></td>
                 <td><input name="broughtBy" id="broughtBy" type="text"></td>
             </tr>
 
             <tr>
-                <td><label for="compartment">Compartment<span>*</span></label></td>
-                <td><input name="compartment" id="compartment" type="text"></td>
-
+                <td><label for="compartmentNo" style="width: 100px; display: inline-block;">Compartment Number:</label></td>
+                <td><input id="compartmentNo" type="text" name="compartmentNo" style="min-width: 250px;" placeholder="Select Compartment number"></td>
             </tr>
 
             <tr>

@@ -4,7 +4,7 @@ public class MorgueQueueSimplifier {
 
     private String names;
     private String identifier;
-
+    private Integer patientId;
     public String getNames() {
         return names;
     }
@@ -60,4 +60,10 @@ public class MorgueQueueSimplifier {
     private String createdBy;
 
     private String dateCreated;
+    public Integer getPatientId() {
+        return patientId;
+    }
+    public void setPatientId(Integer patientId) {
+        this.patientId = patientId;
+    }
 }
