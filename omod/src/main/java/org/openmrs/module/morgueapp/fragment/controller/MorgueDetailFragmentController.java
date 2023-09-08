@@ -74,4 +74,28 @@ public class MorgueDetailFragmentController {
 
         return units;
     }
+    public void addMorgueUnits(@RequestParam(value = "morgueName") String morgueName,
+                                      @RequestParam(value = "description") String description,
+                                      @RequestParam(value = "strength") int strength,
+                                      @RequestParam(value = "retired") int retired){
+        HospitalCoreService hospitalCoreService = Context.getService(HospitalCoreService.class);
+        EhrMorgueStrength ehrMorgueStrength = new EhrMorgueStrength();
+        ehrMorgueStrength.setMorgueName(morgueName);
+        ehrMorgueStrength.setDescription(description);
+        ehrMorgueStrength.setStrength(strength);
+        ehrMorgueStrength.setRetired(retired);
+        ehrMorgueStrength.setCreatedBy(Context.getAuthenticatedUser().getId());
+        ehrMorgueStrength.setCreatedOn(new Date());
+        hospitalCoreService.saveEhrMorgueStrength(ehrMorgueStrength);
+
+    }
+    public List<SimpleObject> fetchUnitDetails(UiUtils uiUtils) {
+        HospitalCoreService hospitalCoreService = Context.getService(HospitalCoreService.class);
+
+        List<SimpleObject> units = null;
+        List<EhrMorgueStrength> ehrMorgueStrengths = hospitalCoreService.getEhrMorgueStrength();
+        units = SimpleObject.fromCollection(ehrMorgueStrengths, uiUtils, "ehrMorgueStrengthId", "morgueName", "description","strength","retired");
+
+        return units;
+    }
 }
