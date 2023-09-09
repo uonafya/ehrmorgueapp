@@ -99,6 +99,33 @@
             jq('#admittedUnit').append('<option value="' + data[index].ehrMorgueStrengthId + '">' + data[index].morgueName + '-' + data[index].strength + '</option>');
         }
     });
+    jq(function () {
+        jq("#diagnosis").on("focus.autocomplete", function () {
+            jq(this).autocomplete({
+                source: function (request, response) {
+                    jq.getJSON('${ ui.actionLink("patientdashboardapp", "clinicalNotes", "getDiagnosis") }', {
+                        q: request.term
+                    }).success(function (data) {
+                        console.log(data);
+                        var results = [];
+                        for (var i in data) {
+                            var result = {
+                                label: data[i].name,
+                                value: data[i].uuid
+                            };
+                            results.push(result);
+                        }
+                        response(results);
+                    });
+                },
+                minLength: 3,
+                select: function (event, ui) {
+                    event.preventDefault();
+                    jq(this).val(ui.item.label);
+                }
+            });
+        });
+    });
 
 
 </script>
@@ -300,36 +327,79 @@
         ${ ui.includeFragment("morgueapp", "morgueQueue") }
     </div>
 </div>
-<div id="enroll-body-details-dialog" class="dialog" style="display:none;">
+<div id="enroll-body-details-dialog" class="dialog" style="display:none;  height: auto !important; width: auto !important;">
     <div class="dialog-header">
         <i class="icon-folder-open"></i>
 
         <h3>Admit Brought In Body</h3>
     </div>
     <div class="dialog-content">
-        <ul>
-            <li>
-                <label>Unit Name<span style="color:red">*</span></label>
-                <input type="text" name="morgueName" id="morgueName" style="width: 90%!important;" />
-            </li>
-            <li>
-                <label>Capacity<span style="color:red">*</span></label>
-                <input type="number" name="strength" id="strength"/>
-            </li>
-            <li>
-                <label>Status<span style="color:red">*</span></label>
-                <select id="retired" name="retired">
-                    <option value="0">Active</option>
-                    <option value="1">Inactive</option>
-                </select>
-            </li>
-            <li>
-                <label>Description<span style="color:red;">*</span></label>
-                <textarea name="description" id="description" style="width: 90%!important;" cols="30" rows="4">
-                </textarea>
+        <table>
+            <tr>
+                <td><label>First Name<span style="color:red">*</span></label></td>
+                <td><input type="text" name="firstName" id="firstName" style="width: 90%!important;" /></td>
+            </tr>
+            <tr>
+                <td><label>Middle Name<span style="color:red">*</span></label></td>
+                <td><input type="text" name="middleName" id="middleName" style="width: 90%!important;" /></td>
+            </tr>
+            <tr>
+                <td><label>Last Name<span style="color:red">*</span></label></td>
+                <td><input type="text" name="lastName" id="lastName" style="width: 90%!important;" /></td>
+            </tr>
+            <tr>
+                <td><label>Sex<span style="color:red">*</span></label></td>
+                <td><select id="sex" name="sex">
+                    <option selected>Select Option</option>
+                    <option value="0">Male</option>
+                    <option value="1">Female</option>
+                </select></td>
 
-            </li>
-        </ul>
+            </tr>
+            <tr>
+                <td><label>Age<span style="color:red">*</span></label></td>
+                <td><input type="number" name="strength" id="strength"/></td>
+            </tr>
+            <tr>
+                <td><label>Date Of Birth<span>*</span></label></td>
+                <td>${ui.includeFragment("uicommons", "field/datetimepicker", [formFieldName: 'dateOfAdmission', id: 'summaryAdmissionDate', label: '', useTime: false, defaultToday: true, class: ['newdtp']])}
+            </td>
+
+            </tr>
+            <tr>
+                <td><label>Marital Status<span style="color:red">*</span></label></td>
+                <td><select id="maritalStatus" name="maritalStatus">
+                    <option selected>Select Option</option>
+                    <option value="1">Married Polygamous</option>
+                    <option value="2">Married Monogamous</option>
+                    <option value="3">Divorced</option>
+                    <option value="4">Widowed</option>
+                    <option value="5">Cohabiting</option>
+                    <option value="6">Single</option>
+                </select></td>
+            </tr>
+            <tr>
+                <td><label for="deathDate">Date Of Death<span>*</span></label></td>
+                <td><input type="datetime-local" name="deathDate" id="deathDate"></td>
+            </tr>
+            <tr>
+                <td><label>Place Of Death<span style="color:red">*</span></label></td>
+                <td><input type="text" name="placeOfDeath" id="placeOfDeath" style="width: 90%!important;" /></td>
+            </tr>
+            <tr>
+                <td><label>Cause of death <span class="important">*</span></label></td>
+                <td class="input-position-class">
+                    <input type="text" id="diagnosis" name="diagnosis" placeholder="Select Diagnosis" size="60" />
+                </td>
+            </tr>
+            <tr>
+                <td><label>Notes<span style="color:red;">*</span></label></td>
+                <td><textarea name="description" id="description" style="width: 90%!important;" cols="30" rows="4">
+                </textarea>
+                </td>
+
+            </tr>
+        </table>
     </div>
     <div class="onerow">
         <button class="button confirm right">Confirm</button>
@@ -375,7 +445,7 @@
             </tr>
 
             <tr>
-                <td><label for="receivedBy">Received By</label></td>
+                <td><label for="receivedBy">Attendant On Call</label></td>
                 <td> <input name="receivedBy" id="receivedBy" type="text"></td>
             </tr>
 
