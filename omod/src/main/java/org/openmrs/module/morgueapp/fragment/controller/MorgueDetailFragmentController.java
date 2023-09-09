@@ -3,6 +3,7 @@ package org.openmrs.module.morgueapp.fragment.controller;
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.hospitalcore.HospitalCoreService;
+import org.openmrs.module.hospitalcore.model.EhrMorgueQueue;
 import org.openmrs.module.hospitalcore.model.EhrMorgueStrength;
 import org.openmrs.module.hospitalcore.model.MorgueAdmission;
 import org.openmrs.ui.framework.SimpleObject;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class MorgueDetailFragmentController {
 
@@ -47,7 +50,15 @@ public class MorgueDetailFragmentController {
         morgueAdmission.setConsent(consent);
         morgueAdmission.setCreatedBy(Context.getAuthenticatedUser());
         morgueAdmission.setCreatedOn(new Date());
-        hospitalCoreService.saveMorgueAdmission(morgueAdmission);
+       MorgueAdmission admission = hospitalCoreService.saveMorgueAdmission(morgueAdmission);
+       if (admission.getMorgueAdmissionId() !=null){
+           EhrMorgueQueue ehrMorgueQueue =Context.getService(HospitalCoreService.class).getEhrMorgueQueue().stream().filter(queu-> (Objects.equals(queu.getPatientId(), patient.getPatientId()))).collect(Collectors.toList()).get(0);
+           if (ehrMorgueQueue !=null) {
+               ehrMorgueQueue.setStatus(1);
+               hospitalCoreService.saveEhrMorgueQueue(ehrMorgueQueue);
+           }
+       }
+
 
     }
     public void addMorgueUnits(@RequestParam(value = "morgueName") String morgueName,
