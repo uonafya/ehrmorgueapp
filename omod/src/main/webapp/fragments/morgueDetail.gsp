@@ -19,7 +19,7 @@
         <td>${it.morgueName}</td>
         <td>${it.description}</td>
         <td>${it.strength}</td>
-        <td>${it.retired}</td>
+        <td>${(it.retired)?"Inactive":"Active"}</td>
     </tr>
     <%}%>
     </tbody>
