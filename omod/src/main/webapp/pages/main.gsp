@@ -126,8 +126,6 @@
             });
         });
     });
-
-
 </script>
 <style>
 .toast-item {
