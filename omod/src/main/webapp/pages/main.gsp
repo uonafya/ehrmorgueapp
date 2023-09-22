@@ -14,6 +14,7 @@
     jq(function () {
         jq("#dtabs").tabs();
         var tbl = jq("#deadDetails").DataTable();
+        var tbl1 = jq("#admittedBodies").DataTable();
         var enrollBodyDialog = emr.setupConfirmationDialog({
             dialogOpts: {
                 overlayClose: false,
@@ -82,13 +83,16 @@
             enrollBodyDialog.show();
         });
         jq('#deadDetails tbody').on('click', 'tr', function () {
-            var table =  jq("#deadDetails").DataTable();
-
-            var info = table.row(this).data();
+            var info = tbl.row(this).data();
             jq("#patient").val(info[2])
             jq("#dateOfDeath").val(info[3])
             jq("#patientId").val(info[0])
+            jq("#queueId").val(info[7]);
             admitBodyDialog.show();
+        });
+        jq('#admittedBodies tbody').on('click', 'tr', function () {
+            var info = tbl1.row(this).data();
+            console.log("The row sa clicked and returned ", info);
         });
     });
     jq.getJSON('${ ui.actionLink("morgueapp", "MorgueDetail", "fetchUnitDetails")}',
@@ -295,7 +299,7 @@
                 <th>Cause of Death(Coded)</th>
                 <th>Created by</th>
                 <th>Date Created</th>
-                <th>Actions</th>
+                <thstyle="display: none">Queue ID</th>
 
 
             </tr>
@@ -310,9 +314,7 @@
                 <td>${it.causeOfDeath}</td>
                 <td>${it.createdBy}</td>
                 <td>${it.dateCreated}</td>
-                <td>
-                  <button id="enrollBtn" class="task">Admit</button>
-                </td>
+                <td style="display: none">${it.queueId}</td>
 
             </tr>
 
@@ -412,6 +414,7 @@
         <h3>Admit New Body</h3>
     </div>
     <div class="dialog-content">
+    <input type="text"  name="queueId" name="queueId" />
         <table>
             <input style="display: none" id="patientId">
             <tr>

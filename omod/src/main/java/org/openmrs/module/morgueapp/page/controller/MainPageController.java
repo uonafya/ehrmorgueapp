@@ -28,6 +28,7 @@ public void controller(PageModel model){
         morgueQueueSimplifier.setDateCreated(DateUtils.getDateFromDateAsString(ehrMorgueQueue.getCreatedOn(), "yyyy-MM-dd HH:MM"));
         morgueQueueSimplifier.setDateAndTimeOfDeath(DateUtils.getDateFromDateAsString(ehrMorgueQueue.getDateAndTimeOfDeath(), "yyyy-MM-dd HH:MM"));
         morgueQueueSimplifier.setPatientId(ehrMorgueQueue.getPatientId());
+        morgueQueueSimplifier.setQueueId(ehrMorgueQueue.getEhrMorgueQueueId());
 
         morgueQueueSimplifierList.add(morgueQueueSimplifier);
     }

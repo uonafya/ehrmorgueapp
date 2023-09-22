@@ -66,4 +66,14 @@ public class MorgueQueueSimplifier {
     public void setPatientId(Integer patientId) {
         this.patientId = patientId;
     }
+
+    public Integer getQueueId() {
+        return queueId;
+    }
+
+    public void setQueueId(Integer queueId) {
+        this.queueId = queueId;
+    }
+
+    private Integer queueId;
 }
