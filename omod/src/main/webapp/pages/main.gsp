@@ -98,7 +98,7 @@
         });
         jq('#admittedBodies tbody').on('click', 'tr', function () {
             var info = tbl1.row(this).data();
-            console.log("The row sa clicked and returned ", info);
+            ui.navigate('morgueapp', 'bodyManagement', {identifier: billId[0]});
         });
     });
     jq.getJSON('${ ui.actionLink("morgueapp", "MorgueDetail", "fetchUnitDetails")}',
@@ -106,7 +106,6 @@
         }
     ).success(function (data) {
         for (var index = 0; index <= data.length; index++) {
-            console.log("The details are >>", data[index]);
             jq('#admittedUnit').append('<option value="' + data[index].ehrMorgueStrengthId + '">' + data[index].morgueName + '-' + data[index].strength + '</option>');
         }
     });
@@ -272,8 +271,8 @@
     </div>
 
     <div class="identifiers">
-        <em>&nbsp; &nbsp; Capacity:</em>
-        <span>x/y</span>
+        <em>&nbsp; &nbsp; Departments:</em>
+        <span>${capacity)</span>
     </div>
 
     <div class="identifiers">
@@ -283,18 +282,17 @@
     <div class="clear"></div>
 </div>
 
-<div id="dtabs">
-    <ul>
-        <li><a href="#morgue-patients">Admission Queue</a></li>
-        <li><a href="#morgue-queue">Admitted Bodies</a></li>
-    </ul>
-    <div style="float: right;">
+<div style="float: right;">
         <button id="refresher" class="confirm">
             <i class="icon-refresh"></i>
             Enroll Body
         </button>
     </div>
-
+<div id="dtabs">
+    <ul>
+        <li><a href="#morgue-patients">Admission Queue</a></li>
+        <li><a href="#morgue-queue">Admitted Bodies</a></li>
+    </ul>
     <div id="morgue-patients">
         <table id="deadDetails">
             <thead>

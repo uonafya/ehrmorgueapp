@@ -23,17 +23,17 @@ public class MorgueDetailFragmentController {
         model.addAttribute("units",Context.getService(HospitalCoreService.class).getEhrMorgueStrength());
     }
 
-    public void enrollBodyDetails(@RequestParam(value = "firstName") String firstName,
-                                  @RequestParam(value = "middleName") String middleName,
-                                  @RequestParam(value = "lastName") String lastName,
-                                  @RequestParam(value = "sex") Integer sex,
-                                  @RequestParam(value = "strength") String strength,
-                                  @RequestParam(value = "dateOfBirth") String dateOfBirth,
-                                  @RequestParam(value = "maritalStatus") Integer maritalStatus,
-                                  @RequestParam(value = "deathDate") String deathDate,
-                                  @RequestParam(value = "placeOfDeath") String placeOfDeath,
-                                  @RequestParam(value = "diagnosis") String diagnosis,
-                                  @RequestParam(value = "description") String description
+    public void enrollBodyDetails(@RequestParam(value = "firstName", required = false) String firstName,
+                                  @RequestParam(value = "middleName", required = false) String middleName,
+                                  @RequestParam(value = "lastName", required = false) String lastName,
+                                  @RequestParam(value = "sex", required = false) Integer sex,
+                                  @RequestParam(value = "strength", required = false) String strength,
+                                  @RequestParam(value = "dateOfBirth", required = false) String dateOfBirth,
+                                  @RequestParam(value = "maritalStatus", required = false) Integer maritalStatus,
+                                  @RequestParam(value = "deathDate", required = false) String deathDate,
+                                  @RequestParam(value = "placeOfDeath", required = false) String placeOfDeath,
+                                  @RequestParam(value = "diagnosis", required = false) String diagnosis,
+                                  @RequestParam(value = "description", required = false) String description
                                   ) {
         System.out.println(firstName);
         System.out.println(middleName);

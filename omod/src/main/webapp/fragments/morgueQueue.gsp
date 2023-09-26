@@ -2,6 +2,7 @@
         <table id="admittedBodies">
             <thead>
             <tr>
+              <th style="display: none;">Patient#</th>
               <th>Identification #</th>
               <th>Compartment #</th>
               <th>Names</th>
@@ -14,6 +15,7 @@
             <tbody>
             <% admittedList.each {%>
             <tr>
+              <td style="display: none;">${it.patient.person.uuid}</td>
               <td>${it.identificationTagNo}</td>
               <td>${it.compartmentNo}</td>
               <td>${it.patient.person.personName}</td>
