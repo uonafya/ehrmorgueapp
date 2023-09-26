@@ -25,12 +25,17 @@
                 confirm: function () {
                     jq.getJSON('${ui.actionLink("morgueapp", "morgueDetail", "enrollBodyDetails")}',
                         {
-                            'countyCode': jq("#countyCode").val().trim(),
-                            'countyName': jq("#countyName").val().trim(),
-                            'website': jq("#website").val().trim(),
-                            'address': jq("#address").val(),
-                            'email': jq("#email").val(),
-                            'phone': jq("#phone").val(),
+                            firstName: jq("#firstName").val(),
+                            middleName: jq("#middleName").val(),
+                            lastName: jq("#lastName").val(),
+                            sex: jq("#sex").val(),
+                            strength: jq("#strength").val(),
+                            dateOfBirth: jq("#dateOfBirth-field").val(),
+                            maritalStatus: jq("#maritalStatus").val(),
+                            deathDate: jq("#deathDate").val(),
+                            placeOfDeath: jq("#placeOfDeath").val(),
+                            diagnosis: jq("#diagnosis").val(),
+                            description: jq("#description").val(),
                         }
                     ).success(function (data) {
                         enrollBodyDialog.close();
@@ -84,6 +89,7 @@
         });
         jq('#deadDetails tbody').on('click', 'tr', function () {
             var info = tbl.row(this).data();
+            console.log("The id we are looking for ", info);
             jq("#patient").val(info[2])
             jq("#dateOfDeath").val(info[3])
             jq("#patientId").val(info[0])
@@ -100,6 +106,7 @@
         }
     ).success(function (data) {
         for (var index = 0; index <= data.length; index++) {
+            console.log("The details are >>", data[index]);
             jq('#admittedUnit').append('<option value="' + data[index].ehrMorgueStrengthId + '">' + data[index].morgueName + '-' + data[index].strength + '</option>');
         }
     });
@@ -299,7 +306,7 @@
                 <th>Cause of Death(Coded)</th>
                 <th>Created by</th>
                 <th>Date Created</th>
-                <thstyle="display: none">Queue ID</th>
+                <th style="display: none">Queue ID</th>
 
 
             </tr>
@@ -344,7 +351,7 @@
                 <td><input type="text" name="middleName" id="middleName" style="width: 90%!important;" /></td>
             </tr>
             <tr>
-                <td><label>Last Name<span style="color:red">*</span></label></td>
+                <td><label>Last Name</label></td>
                 <td><input type="text" name="lastName" id="lastName" style="width: 90%!important;" /></td>
             </tr>
             <tr>
@@ -362,7 +369,7 @@
             </tr>
             <tr>
                 <td><label>Date Of Birth<span>*</span></label></td>
-                <td>${ui.includeFragment("uicommons", "field/datetimepicker", [formFieldName: 'dateOfAdmission', id: 'summaryAdmissionDate', label: '', useTime: false, defaultToday: true, class: ['newdtp']])}
+                <td>${ui.includeFragment("uicommons", "field/datetimepicker", [formFieldName: 'dateOfBirth', id: 'dateOfBirth', label: '', useTime: false, defaultToday: true, class: ['newdtp']])}
             </td>
 
             </tr>

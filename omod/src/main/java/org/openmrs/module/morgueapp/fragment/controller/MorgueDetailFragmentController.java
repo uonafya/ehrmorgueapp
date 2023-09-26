@@ -6,6 +6,7 @@ import org.openmrs.module.hospitalcore.HospitalCoreService;
 import org.openmrs.module.hospitalcore.model.EhrMorgueQueue;
 import org.openmrs.module.hospitalcore.model.EhrMorgueStrength;
 import org.openmrs.module.hospitalcore.model.MorgueAdmission;
+import org.openmrs.module.hospitalcore.util.MorgueUtils;
 import org.openmrs.ui.framework.SimpleObject;
 import org.openmrs.ui.framework.UiUtils;
 import org.openmrs.ui.framework.fragment.FragmentModel;
@@ -22,7 +23,29 @@ public class MorgueDetailFragmentController {
         model.addAttribute("units",Context.getService(HospitalCoreService.class).getEhrMorgueStrength());
     }
 
-    public void enrollBodyDetails() {
+    public void enrollBodyDetails(@RequestParam(value = "firstName") String firstName,
+                                  @RequestParam(value = "middleName") String middleName,
+                                  @RequestParam(value = "lastName") String lastName,
+                                  @RequestParam(value = "sex") Integer sex,
+                                  @RequestParam(value = "strength") String strength,
+                                  @RequestParam(value = "dateOfBirth") String dateOfBirth,
+                                  @RequestParam(value = "maritalStatus") Integer maritalStatus,
+                                  @RequestParam(value = "deathDate") String deathDate,
+                                  @RequestParam(value = "placeOfDeath") String placeOfDeath,
+                                  @RequestParam(value = "diagnosis") String diagnosis,
+                                  @RequestParam(value = "description") String description
+                                  ) {
+        System.out.println(firstName);
+        System.out.println(middleName);
+        System.out.println(lastName);
+        System.out.println(sex);
+        System.out.println(strength);
+        System.out.println(dateOfBirth);
+        System.out.println(maritalStatus);
+        System.out.println(deathDate);
+        System.out.println(placeOfDeath);
+        System.out.println(diagnosis);
+        System.out.println(description);
 
     }
 
@@ -50,11 +73,12 @@ public class MorgueDetailFragmentController {
         morgueAdmission.setConsent(consent);
         morgueAdmission.setCreatedBy(Context.getAuthenticatedUser());
         morgueAdmission.setCreatedOn(new Date());
+        morgueAdmission.setStatus(MorgueUtils.BODY_ADMITTED);
        MorgueAdmission admission = hospitalCoreService.saveMorgueAdmission(morgueAdmission);
        if (admission.getMorgueAdmissionId() !=null){
            EhrMorgueQueue ehrMorgueQueue =Context.getService(HospitalCoreService.class).getEhrMorgueQueue().stream().filter(queu-> (Objects.equals(queu.getPatientId(), patient.getPatientId()))).collect(Collectors.toList()).get(0);
            if (ehrMorgueQueue !=null) {
-               ehrMorgueQueue.setStatus(1);
+               ehrMorgueQueue.setStatus(MorgueUtils.BODY_CLEARED_FOR_ADMISSION);
                hospitalCoreService.saveEhrMorgueQueue(ehrMorgueQueue);
            }
        }
