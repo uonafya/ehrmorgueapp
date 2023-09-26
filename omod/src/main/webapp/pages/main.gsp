@@ -15,6 +15,7 @@
         jq("#dtabs").tabs();
         var tbl = jq("#deadDetails").DataTable();
         var tbl1 = jq("#admittedBodies").DataTable();
+        var tbl2 = jq("#dischargedBodies").DataTable();
         var enrollBodyDialog = emr.setupConfirmationDialog({
             dialogOpts: {
                 overlayClose: false,
@@ -98,8 +99,12 @@
         });
         jq('#admittedBodies tbody').on('click', 'tr', function () {
             var info = tbl1.row(this).data();
-            ui.navigate('morgueapp', 'bodyManagement', {identifier: billId[0]});
+            ui.navigate('morgueapp', 'bodyManagement', {identifier: info[0]});
         });
+        jq('#dischargedBodies tbody').on('click', 'tr', function () {
+                    var info = tbl1.row(this).data();
+                    ui.navigate('morgueapp', 'bodyManagementChart', {identifier: info[0]});
+                });
     });
     jq.getJSON('${ ui.actionLink("morgueapp", "MorgueDetail", "fetchUnitDetails")}',
         {
@@ -272,7 +277,7 @@
 
     <div class="identifiers">
         <em>&nbsp; &nbsp; Departments:</em>
-        <span>${capacity)</span>
+        <span>${capacity}</span>
     </div>
 
     <div class="identifiers">
@@ -281,17 +286,17 @@
     </div>
     <div class="clear"></div>
 </div>
-
-<div style="float: right;">
+<div id="dtabs">
+    <div style="float: right;">
         <button id="refresher" class="confirm">
             <i class="icon-refresh"></i>
             Enroll Body
         </button>
     </div>
-<div id="dtabs">
     <ul>
         <li><a href="#morgue-patients">Admission Queue</a></li>
         <li><a href="#morgue-queue">Admitted Bodies</a></li>
+        <li><a href="#morgue-discharge">Discharged Bodies</a></li>
     </ul>
     <div id="morgue-patients">
         <table id="deadDetails">
@@ -330,6 +335,9 @@
 
     <div id="morgue-queue">
         ${ ui.includeFragment("morgueapp", "morgueQueue") }
+    </div>
+    <div id="morgue-discharge">
+            ${ ui.includeFragment("morgueapp", "dischargedBodies") }
     </div>
 </div>
 <div id="enroll-body-details-dialog" class="dialog" style="display:none;  height: auto !important; width: auto !important;">

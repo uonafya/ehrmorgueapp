@@ -5,10 +5,11 @@ import org.openmrs.module.hospitalcore.HospitalCoreService;
 import org.openmrs.module.hospitalcore.util.MorgueUtils;
 import org.openmrs.ui.framework.fragment.FragmentModel;
 
-public class MorgueQueueFragmentController {
+public class DischargedBodiesFragmentController {
 
-    public void controller(FragmentModel model){
+    public void controller(FragmentModel model) {
         HospitalCoreService hospitalCoreService = Context.getService(HospitalCoreService.class);
-        model.addAttribute("admittedList", hospitalCoreService.getMorgueAdmissionList(null, null, MorgueUtils.BODY_ADMITTED));
+        model.addAttribute("dischargedList", hospitalCoreService.getMorgueAdmissionList(null, null, MorgueUtils.BODY_DISCHARGED));
+
     }
 }
