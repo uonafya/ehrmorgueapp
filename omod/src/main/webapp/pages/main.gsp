@@ -349,28 +349,28 @@
     <div class="dialog-content">
         <table>
             <tr>
-                <td><label>First Name<span style="color:red">*</span></label></td>
+                <td><label>Given Name<span style="color:red">*</span></label></td>
                 <td><input type="text" name="firstName" id="firstName" style="width: 90%!important;" /></td>
             </tr>
             <tr>
-                <td><label>Middle Name<span style="color:red">*</span></label></td>
+                <td><label>Middle Name</label></td>
                 <td><input type="text" name="middleName" id="middleName" style="width: 90%!important;" /></td>
             </tr>
             <tr>
-                <td><label>Last Name</label></td>
+                <td><label>Family Name<span style="color:red">*</span></label></td>
                 <td><input type="text" name="lastName" id="lastName" style="width: 90%!important;" /></td>
             </tr>
             <tr>
                 <td><label>Sex<span style="color:red">*</span></label></td>
                 <td><select id="sex" name="sex">
                     <option selected>Select Option</option>
-                    <option value="0">Male</option>
-                    <option value="1">Female</option>
+                    <option value="M">Male</option>
+                    <option value="F">Female</option>
                 </select></td>
 
             </tr>
             <tr>
-                <td><label>Age<span style="color:red">*</span></label></td>
+                <td><label>Age</label></td>
                 <td><input type="number" name="strength" id="strength"/></td>
             </tr>
             <tr>
@@ -383,12 +383,14 @@
                 <td><label>Marital Status<span style="color:red">*</span></label></td>
                 <td><select id="maritalStatus" name="maritalStatus">
                     <option selected>Select Option</option>
-                    <option value="1">Married Polygamous</option>
-                    <option value="2">Married Monogamous</option>
-                    <option value="3">Divorced</option>
-                    <option value="4">Widowed</option>
-                    <option value="5">Cohabiting</option>
-                    <option value="6">Single</option>
+                    <option value="Married Polygamous">Married Polygamous</option>
+                    <option value="Married Monogamous">Married Monogamous</option>
+                    <option value="Divorced">Divorced</option>
+                    <option value="Widowed">Widowed</option>
+                    <option value="Cohabiting">Cohabiting</option>
+                    <option value="Single">Single</option>
+                    <option value="Not Married">Not Married</option>
+                    <option value="None">None</option>
                 </select></td>
             </tr>
             <tr>
