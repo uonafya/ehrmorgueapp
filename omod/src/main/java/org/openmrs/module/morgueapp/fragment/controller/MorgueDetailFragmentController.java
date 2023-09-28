@@ -58,7 +58,7 @@ public class MorgueDetailFragmentController {
         personName.setDateCreated(new Date());
 
         //create a patient object
-        String morgueNumber = hospitalCoreService.generateOpdNumber("3FF91B30-04B8-4B0D-98B3-9295122B5F84", IdentifierTypes.MORGUE);
+        String morgueNumber = hospitalCoreService.generateOpdNumber("MORG", IdentifierTypes.MORGUE);
         PatientIdentifier patientIdentifier = new PatientIdentifier();
         patientIdentifier.setPreferred(true);
         patientIdentifier.setIdentifierType(patientService.getPatientIdentifierTypeByUuid("3FF91B30-04B8-4B0D-98B3-9295122B5F84"));
@@ -135,7 +135,7 @@ public class MorgueDetailFragmentController {
                 null,
                 Arrays.asList(Context.getPatientService().getPatientIdentifierTypeByUuid(
                         "3FF91B30-04B8-4B0D-98B3-9295122B5F84")), null, Arrays.asList(patient), false);
-        String morgueNumber = hospitalCoreService.generateOpdNumber("3FF91B30-04B8-4B0D-98B3-9295122B5F84", IdentifierTypes.MORGUE);
+        String morgueNumber = hospitalCoreService.generateOpdNumber("MORG", IdentifierTypes.MORGUE);
         if (patientIdentifierList.isEmpty()) {
             hospitalCoreService.savePatientOpdNumbers(patient, "MORG", "3FF91B30-04B8-4B0D-98B3-9295122B5F84",
                     IdentifierTypes.MORGUE);
