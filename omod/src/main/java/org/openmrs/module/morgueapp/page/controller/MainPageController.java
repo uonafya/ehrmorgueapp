@@ -1,5 +1,7 @@
 package org.openmrs.module.morgueapp.page.controller;
 
+import org.openmrs.Role;
+import org.openmrs.User;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.hospitalcore.HospitalCoreService;
 import org.openmrs.module.hospitalcore.model.EhrMorgueQueue;
@@ -34,6 +36,12 @@ public void controller(PageModel model){
     }
     model.addAttribute("deadList", morgueQueueSimplifierList);
     model.addAttribute("date", new Date());
+    model.addAttribute("morgueAdmissions",Context.getService(HospitalCoreService.class).getMorgueAdmissionList(new Date(),new Date()));
+    Role doctorRole = Context.getUserService().getRole(MorgueConstants.PROPERTY_NAME_DOCTOR_ROLE);
+    if (doctorRole != null) {
+        List<User> listDoctor = Context.getUserService().getUsersByRole(doctorRole);
+        model.addAttribute("listDoctor", listDoctor);
+    }
 }
 
 }
