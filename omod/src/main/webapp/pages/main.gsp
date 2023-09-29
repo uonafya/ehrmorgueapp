@@ -56,7 +56,7 @@
             selector: '#admit-body-details-dialog',
             actions: {
                 confirm: function () {
-                    var formulations = jq("#admittedUnit").val();
+                    var units = jq("#ehrMorgueStrengthId").val();
                     jq.getJSON('${ui.actionLink("morgueapp", "morgueDetail", "admitBodyDetails")}',
                         {
                             'patient': jq("#patient").val().trim(),
@@ -70,7 +70,7 @@
                             'compartmentNo': jq("#compartmentNo").val(),
                             'consent': jq("#consent").val(),
                             'patientId':jq("#patientId").val(),
-                            'admittedUnit':jq("#multiple").val()
+                            'ehrMorgueStrengthId':jq("#ehrMorgueStrengthId").val()
                         }
                     ).success(function (data) {
                         admitBodyDialog.close();
@@ -106,8 +106,7 @@
         }
     ).success(function (data) {
         for (var index = 0; index <= data.length; index++) {
-            console.log("The details are >>", data[index]);
-            jq('#admittedUnit').append('<option value="' + data[index].ehrMorgueStrengthId + '">' + data[index].morgueName + '-' + data[index].strength + '</option>');
+            jq('#ehrMorgueStrengthId').append('<option value="' + data[index].ehrMorgueStrengthId + '">' + data[index].morgueName + '-' + data[index].strength + '</option>');
         }
     });
     jq(function () {
@@ -137,6 +136,57 @@
             });
         });
     });
+    function setBedNo(bedNum){
+        jq('#compartmentNo').val(bedNum)
+        jq('#addBedDialog').addClass('hidden')
+    }
+
+    jq(function() {
+
+
+        jq("#ehrMorgueStrengthId").on("change",function () {
+            var currentID = jq(this).val();
+
+
+            jq.getJSON('${ ui.actionLink("morgueapp", "MorgueDetail", "getUnitStrength")  }',{
+                unitId: currentID
+            })
+                .success(function(data) {
+
+                    var pasteBed = '';
+                    jq('#dump-bed').html('');
+
+                    for (var key in data) {
+                        if (data.hasOwnProperty(key)) {
+                            var val = data[key];
+
+                            for(var i in val){
+                                if(val.hasOwnProperty(i)){
+                                    var j = val[i];
+
+
+                                    pasteBed += '<div class="bp-container" onclick="setBedNo('+i+')" data-bednum="'+i+'" data-people="'+j+'"> <span class="bp-span bno">Compartment <b>#' + i + '</b></span> <span class="bp-span bpl" >Patients: <b>' + j+'</b></span></div>';
+                                }
+                            }
+
+                        }
+                    }
+
+
+                    jq('#dump-bed').html(pasteBed);
+
+                })
+                .error(function(xhr, status, err) {
+                    jq().toastmessage('showErrorToast', "Error:" + err);
+                })
+        });
+
+        jq("#compartmentNo").on("click", function(e) {
+            jq('#addBedDialog').removeClass('hidden')
+        });
+
+    });
+
 </script>
 <style>
 .toast-item {
@@ -242,6 +292,37 @@
 #tabs .ui-tabs-panel.ui-tabs-active {
     /* Show the active tab content */
     display: block;
+}
+#dump-bed{
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(6, auto);
+    gap: 7px;
+    padding-bottom: 14px;
+}
+.bp-container{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 2px;
+}
+.bp-container{
+    padding: 3px;
+    background-color: firebrick;
+    color: white;
+    cursor: pointer;
+}
+.bp-container[data-people="0"]{
+    background-color: #34bf6e;
+}
+#addBedDialog{
+    position: absolute;
+    top: 0%;
+    z-index: 3000;
+    left: 25%;
+    width: 60%;
+    overflow: auto;
+    height: 90%;
 }
 </style>
 
@@ -449,12 +530,22 @@
             </tr>
             <tr>
                 <td><label>Admitted Unit<span>*</span></label></td>
-                <td><select name="admittedUnit" id="admittedUnit"></select></td>
+                <td><select name="ehrMorgueStrengthId" id="ehrMorgueStrengthId"></select></td>
             </tr>
 
             <tr>
                 <td><label for="receivedBy">Attendant On Call</label></td>
-                <td> <input name="receivedBy" id="receivedBy" type="text"></td>
+                <td>
+                    <select required name="receivedBy" id="receivedBy"  style="width: 250px; >
+                    <option value="please select ...">Select Doctor On Call</option>
+                    <% if (listDoctor!=null && listDoctor!=""){ %>
+                    <% listDoctor.each { doct -> %>
+                    <option title="${doct.givenName}"   value="${doct.id}">
+                        ${doct.givenName}
+                    </option>
+                    <% } %>
+                    <% } %>
+                </select></td>
             </tr>
 
             <tr>
@@ -488,5 +579,14 @@
     <div class="onerow">
         <button class="button confirm right">Confirm</button>
         <button class="button cancel">Cancel</button>
+    </div>
+</div>
+<div id="addBedDialog" class="dialog hidden">
+    <div class="dialog-header">
+        <i class="icon-folder-open"></i>
+        <h3>Compartment occupancy map</h3>
+    </div>
+    <div class="dialog-content">
+        <div id="dump-bed"></div>
     </div>
 </div>

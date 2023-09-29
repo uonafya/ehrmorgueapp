@@ -12,9 +12,7 @@ import org.openmrs.ui.framework.UiUtils;
 import org.openmrs.ui.framework.fragment.FragmentModel;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class MorgueDetailFragmentController {
@@ -54,6 +52,7 @@ public class MorgueDetailFragmentController {
                                  @RequestParam(value = "bodyType") String bodyType,
                                  @RequestParam(value = "dateOfAdmission") Date dateOfAdmission,
                                  @RequestParam(value = "receivedBy") String receivedBy,
+                                 @RequestParam(value = "ehrMorgueStrengthId") EhrMorgueStrength ehrMorgueStrengthId,
                                  @RequestParam(value = "propertyWithBody") String propertyWithBody,
                                  @RequestParam(value = "identificationTagNo") String identificationTagNo,
                                  @RequestParam(value = "broughtBy") String broughtBy,
@@ -66,6 +65,7 @@ public class MorgueDetailFragmentController {
         morgueAdmission.setBodyType(bodyType);
         morgueAdmission.setDateOfAdmission(dateOfAdmission);
         morgueAdmission.setReceivedBy(receivedBy);
+        morgueAdmission.setEhrMorgueStrengthId(ehrMorgueStrengthId);
         morgueAdmission.setPropertyWithBody(propertyWithBody);
         morgueAdmission.setIdentificationTagNo(identificationTagNo);
         morgueAdmission.setBroughtBy(broughtBy);
@@ -109,4 +109,47 @@ public class MorgueDetailFragmentController {
 
         return units;
     }
+    public SimpleObject getUnitStrength(@RequestParam(value = "unitId", required = false) Integer unitId,@RequestParam(value = "startDate", required = false)Date startDate,@RequestParam(value = "endDate", required = false)Date endDate,
+                                       UiUtils uiUtils) {
+
+        HospitalCoreService hospitalCoreService = Context.getService(HospitalCoreService.class);
+        Map<Long, Integer> unitStrengthMap = new HashMap<Long, Integer>();
+        EhrMorgueStrength ehrMorgueStrength = hospitalCoreService.getEhrMorgueStrength().get(unitId);
+
+        boolean unitStrengthValueAvailable = false;
+        if (ehrMorgueStrength != null) {
+            Integer bedStrength = ehrMorgueStrength.getStrength();
+            List<MorgueAdmission> allAdmittedPatients = hospitalCoreService.getMorgueAdmissionList(startDate,endDate);
+            //populate all bed numbers with 0;
+            for (Long i = 1L; i <= bedStrength; i++) {
+                unitStrengthMap.put(i, 0);
+            }
+
+
+            for (MorgueAdmission morgueAdmittedPatient : allAdmittedPatients) {
+                int conceID = morgueAdmittedPatient.getPatient().getPatientId();
+                if (conceID == unitId) {
+                    Long bedNo = new Long(0);
+                    try {
+                        bedNo = Long.parseLong(morgueAdmittedPatient.getCompartmentNo());
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace();
+                    }
+                    Integer bedCount = unitStrengthMap.get(bedNo);
+                    if (bedCount == null) {
+                        bedCount = 1;
+                    } else {
+                        bedCount = bedCount + 1;
+                    }
+                    unitStrengthMap.put(bedNo, bedCount);
+                }
+            }
+            unitStrengthValueAvailable= true;
+
+        }
+        float bedStrengthSize = unitStrengthMap.size();
+        return SimpleObject.create("unitStrengthMap", unitStrengthMap,"unitStrengthValueAvailable",unitStrengthValueAvailable, "size",Math.round(Math.sqrt(unitStrengthMap.size())) + 1,"unitMax",Math.round(bedStrengthSize));
+
+    }
+
 }
