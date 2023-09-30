@@ -104,17 +104,16 @@
         jq('#dischargedBodies tbody').on('click', 'tr', function () {
                     var info = tbl1.row(this).data();
                     ui.navigate('morgueapp', 'bodyManagementChart', {identifier: info[0]});
-                });
-    });
-    jq.getJSON('${ ui.actionLink("morgueapp", "MorgueDetail", "fetchUnitDetails")}',
-        {
-        }
-    ).success(function (data) {
-        for (var index = 0; index <= data.length; index++) {
-            jq('#admittedUnit').append('<option value="' + data[index].ehrMorgueStrengthId + '">' + data[index].morgueName + '-' + data[index].strength + '</option>');
-        }
-    });
-    jq(function () {
+          });
+        jq.getJSON('${ ui.actionLink("morgueapp", "MorgueDetail", "fetchUnitDetails")}',
+                {
+                }
+            ).success(function (data) {
+                for (var index = 0; index <= data.length; index++) {
+                    console.log(data[index]);
+                    jq('#admittedUnit').append('<option value="' + data[index].ehrMorgueStrengthId + '">' + data[index].morgueName + '-' + data[index].strength + '</option>');
+                }
+        });
         jq("#diagnosis").on("focus.autocomplete", function () {
             jq(this).autocomplete({
                 source: function (request, response) {
@@ -139,6 +138,10 @@
                     jq(this).val(ui.item.label);
                 }
             });
+        });
+
+        jq('#admittedUnit').on('change', function() {
+          alert( this.value );
         });
     });
 </script>
@@ -429,7 +432,6 @@
         <h3>Admit New Body</h3>
     </div>
     <div class="dialog-content">
-    <input type="text"  name="queueId" name="queueId" />
         <table>
             <input style="display: none" id="patientId">
             <tr>
@@ -482,7 +484,9 @@
 
             <tr>
                 <td><label for="compartmentNo" style="width: 100px; display: inline-block;">Compartment Number:</label></td>
-                <td><input id="compartmentNo" type="text" name="compartmentNo" style="min-width: 250px;" placeholder="Select Compartment number"></td>
+                <td>
+                <select id="compartmentNo" name="compartmentNo" style="min-width: 250px;" placeholder="Select Compartment number"></select>
+                </td>
             </tr>
 
             <tr>

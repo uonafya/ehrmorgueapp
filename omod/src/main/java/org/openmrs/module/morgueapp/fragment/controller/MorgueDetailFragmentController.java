@@ -3,7 +3,7 @@ package org.openmrs.module.morgueapp.fragment.controller;
 import org.apache.commons.lang3.StringUtils;
 import org.openmrs.Patient;
 import org.openmrs.PatientIdentifier;
-import org.openmrs.Person;
+import org.openmrs.PatientIdentifierType;
 import org.openmrs.PersonName;
 import org.openmrs.api.PatientService;
 import org.openmrs.api.PersonService;
@@ -13,7 +13,9 @@ import org.openmrs.module.hospitalcore.IdentifierTypes;
 import org.openmrs.module.hospitalcore.model.EhrMorgueQueue;
 import org.openmrs.module.hospitalcore.model.EhrMorgueStrength;
 import org.openmrs.module.hospitalcore.model.MorgueAdmission;
+import org.openmrs.module.hospitalcore.model.MorgueCompatimentAllocation;
 import org.openmrs.module.hospitalcore.util.MorgueUtils;
+import org.openmrs.module.idgen.service.IdentifierSourceService;
 import org.openmrs.module.kenyaemr.api.KenyaEmrService;
 import org.openmrs.ui.framework.SimpleObject;
 import org.openmrs.ui.framework.UiUtils;
@@ -58,17 +60,21 @@ public class MorgueDetailFragmentController {
         personName.setDateCreated(new Date());
 
         //create a patient object
-        String morgueNumber = hospitalCoreService.generateOpdNumber("MORG", IdentifierTypes.MORGUE);
-        PatientIdentifier patientIdentifier = new PatientIdentifier();
-        patientIdentifier.setPreferred(true);
-        patientIdentifier.setIdentifierType(patientService.getPatientIdentifierTypeByUuid("3FF91B30-04B8-4B0D-98B3-9295122B5F84"));
-        patientIdentifier.setIdentifier(morgueNumber);
-        patientIdentifier.setCreator(Context.getAuthenticatedUser());
-        patientIdentifier.setDateCreated(new Date());
-        patientIdentifier.setLocation(Context.getService(KenyaEmrService.class).getDefaultLocation());
+
+        PatientIdentifierType openmrsIdType = patientService.getPatientIdentifierTypeByUuid("dfacd928-0370-4315-99d7-6ec1c9f7ae76");
+        String generatedOpenMRSID = Context.getService(IdentifierSourceService.class).generateIdentifier(openmrsIdType, "Registration");
+
+
+        PatientIdentifier openMRSID = new PatientIdentifier();
+        openMRSID.setIdentifierType(openmrsIdType);
+        openMRSID.setPreferred(true);
+        openMRSID.setIdentifier(generatedOpenMRSID);
+        openMRSID.setCreator(Context.getAuthenticatedUser());
+        openMRSID.setDateCreated(new Date());
+        openMRSID.setLocation(Context.getService(KenyaEmrService.class).getDefaultLocation());
 
         Patient patient = new Patient();
-        patient.addIdentifier(patientIdentifier);
+        patient.addIdentifier(openMRSID);
         patient.setCreator(Context.getAuthenticatedUser());
         patient.setDateCreated(new Date());
         patient.addName(personName);
@@ -79,6 +85,9 @@ public class MorgueDetailFragmentController {
         if(strength ==null && dateOfBirth != null) {
             patient.setBirthdate(dateOfBirth);
         }
+        patient.setDead(true);
+        patient.setDeathDate(deathDate);
+        patient.setCauseOfDeath(Context.getConceptService().getConceptByName(diagnosis));
         Patient patient1 = patientService.savePatient(patient);
         //create a morgue queue and save it ready for admission
         EhrMorgueQueue ehrMorgueQueue = new EhrMorgueQueue();
@@ -165,7 +174,17 @@ public class MorgueDetailFragmentController {
         ehrMorgueStrength.setRetired(retired);
         ehrMorgueStrength.setCreatedBy(Context.getAuthenticatedUser().getId());
         ehrMorgueStrength.setCreatedOn(new Date());
-        hospitalCoreService.saveEhrMorgueStrength(ehrMorgueStrength);
+        EhrMorgueStrength saveStrength = hospitalCoreService.saveEhrMorgueStrength(ehrMorgueStrength);
+        //save the compartments units for every department
+        MorgueCompatimentAllocation morgueCompatimentAllocation = null;
+        for(int s=0; s<=saveStrength.getStrength(); s++) {
+            morgueCompatimentAllocation = new MorgueCompatimentAllocation();
+            morgueCompatimentAllocation.setMorgueStrength(saveStrength);
+            morgueCompatimentAllocation.setCompartimentNumber(getMorgueAbbreviation(saveStrength.getMorgueName()+"-"+s));
+            morgueCompatimentAllocation.setAllocated(0);
+            morgueCompatimentAllocation.setVoided(0);
+            hospitalCoreService.saveMorgueCompartmentAllocation(morgueCompatimentAllocation);
+        }
 
     }
     public List<SimpleObject> fetchUnitDetails(UiUtils uiUtils) {
@@ -176,5 +195,15 @@ public class MorgueDetailFragmentController {
         units = SimpleObject.fromCollection(ehrMorgueStrengths, uiUtils, "ehrMorgueStrengthId", "morgueName", "description","strength","retired");
 
         return units;
+    }
+
+    private String getMorgueAbbreviation(String name) {
+        StringBuilder firstLetters = new StringBuilder();
+        for (String word : name.split("\\s+")) {
+            if (!word.isEmpty()) {
+                firstLetters.append(word.charAt(0));
+            }
+        }
+        return firstLetters.toString();
     }
 }
