@@ -206,4 +206,15 @@ public class MorgueDetailFragmentController {
         }
         return firstLetters.toString();
     }
+
+    public List<SimpleObject> fetchAvailableCompartmentUnits(@RequestParam(value = "dept", required = false) Integer dept, UiUtils uiUtils) {
+        HospitalCoreService hospitalCoreService = Context.getService(HospitalCoreService.class);
+        EhrMorgueStrength ehrMorgueStrength = hospitalCoreService.getEhrMorgueStrengthById(dept);
+
+        List<SimpleObject> allocations = null;
+        List<MorgueCompatimentAllocation> morgueCompatimentAllocationList = hospitalCoreService.getMorgueCompartmentAllocationList(ehrMorgueStrength,0);
+        allocations = SimpleObject.fromCollection(morgueCompatimentAllocationList, uiUtils, "compartimentId", "morgueStrength", "compartimentNumber","allocated","voided");
+
+        return allocations;
+    }
 }

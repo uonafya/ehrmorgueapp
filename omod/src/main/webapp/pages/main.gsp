@@ -141,7 +141,18 @@
         });
 
         jq('#admittedUnit').on('change', function() {
-          alert( this.value );
+          var valRequired = this.value;
+          jq.getJSON('${ ui.actionLink("morgueapp", "MorgueDetail", "fetchAvailableCompartmentUnits")}',
+                    {
+                      dept:valRequired
+                    }
+                    }
+                ).success(function (data) {
+                    for (var index = 0; index <= data.length; index++) {
+                        console.log(data[index]);
+                        jq('#compartmentNo').append('<option value="' + data[index].compartimentId + '">' + data[index].compartimentNumber + '</option>');
+                    }
+            });
         });
     });
 </script>
