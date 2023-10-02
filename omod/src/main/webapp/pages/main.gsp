@@ -90,7 +90,6 @@
         });
         jq('#deadDetails tbody').on('click', 'tr', function () {
             var info = tbl.row(this).data();
-            console.log("The id we are looking for ", info);
             jq("#patient").val(info[2])
             jq("#dateOfDeath").val(info[3])
             jq("#patientId").val(info[0])
@@ -110,7 +109,6 @@
                 }
             ).success(function (data) {
                 for (var index = 0; index <= data.length; index++) {
-                    console.log(data[index]);
                     jq('#admittedUnit').append('<option value="' + data[index].ehrMorgueStrengthId + '">' + data[index].morgueName + '-' + data[index].strength + '</option>');
                 }
         });
@@ -120,7 +118,6 @@
                     jq.getJSON('${ ui.actionLink("patientdashboardapp", "clinicalNotes", "getDiagnosis") }', {
                         q: request.term
                     }).success(function (data) {
-                        console.log(data);
                         var results = [];
                         for (var i in data) {
                             var result = {
@@ -146,11 +143,9 @@
                     {
                       dept:valRequired
                     }
-                    }
                 ).success(function (data) {
                     for (var index = 0; index <= data.length; index++) {
-                        console.log(data[index]);
-                        jq('#compartmentNo').append('<option value="' + data[index].compartimentId + '">' + data[index].compartimentNumber + '</option>');
+                        jq('#compartmentNo').append('<option value="' + data[index].compartmentId + '">' + data[index].compartmentNumber + '</option>');
                     }
             });
         });
@@ -470,7 +465,11 @@
             </tr>
             <tr>
                 <td><label>Admitted Unit<span>*</span></label></td>
-                <td><select name="admittedUnit" id="admittedUnit"></select></td>
+                <td>
+                <select name="admittedUnit" id="admittedUnit">
+                    <option value="0">-----Select a unit-----</option>
+                </select>
+                </td>
             </tr>
 
             <tr>
@@ -496,7 +495,9 @@
             <tr>
                 <td><label for="compartmentNo" style="width: 100px; display: inline-block;">Compartment Number:</label></td>
                 <td>
-                <select id="compartmentNo" name="compartmentNo" style="min-width: 250px;" placeholder="Select Compartment number"></select>
+                <select id="compartmentNo" name="compartmentNo" style="min-width: 250px;" placeholder="Select Compartment number">
+                  <option value="0">-----Select-----</option>
+                </select>
                 </td>
             </tr>
 

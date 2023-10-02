@@ -34,7 +34,7 @@ public void controller(PageModel model){
     }
     model.addAttribute("deadList", morgueQueueSimplifierList);
     model.addAttribute("date", new Date());
-    model.addAttribute("capacity", service.getEhrMorgueStrength().size());
+    model.addAttribute("capacity", service.getEhrMorgueStrength(null).size());
 }
 
 }

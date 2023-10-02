@@ -13,7 +13,7 @@ import org.openmrs.module.hospitalcore.IdentifierTypes;
 import org.openmrs.module.hospitalcore.model.EhrMorgueQueue;
 import org.openmrs.module.hospitalcore.model.EhrMorgueStrength;
 import org.openmrs.module.hospitalcore.model.MorgueAdmission;
-import org.openmrs.module.hospitalcore.model.MorgueCompatimentAllocation;
+import org.openmrs.module.hospitalcore.model.MorgueCompartmentAllocation;
 import org.openmrs.module.hospitalcore.util.MorgueUtils;
 import org.openmrs.module.idgen.service.IdentifierSourceService;
 import org.openmrs.module.kenyaemr.api.KenyaEmrService;
@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
 public class MorgueDetailFragmentController {
 
     public void controller(FragmentModel model) {
-        model.addAttribute("units",Context.getService(HospitalCoreService.class).getEhrMorgueStrength());
+        model.addAttribute("units",Context.getService(HospitalCoreService.class).getEhrMorgueStrength(null));
     }
 
     public void enrollBodyDetails(@RequestParam(value = "firstName") String firstName,
@@ -124,6 +124,7 @@ public class MorgueDetailFragmentController {
                                  @RequestParam(value = "identificationTagNo") String identificationTagNo,
                                  @RequestParam(value = "broughtBy") String broughtBy,
                                  @RequestParam(value = "compartmentNo") String compartmentNo,
+                                 @RequestParam(value = "admittedUnit") Integer admittedUnit,
                                  @RequestParam(value = "consent") String consent) {
         HospitalCoreService hospitalCoreService = Context.getService(HospitalCoreService.class);
         MorgueAdmission morgueAdmission = new MorgueAdmission();
@@ -135,6 +136,7 @@ public class MorgueDetailFragmentController {
         morgueAdmission.setPropertyWithBody(propertyWithBody);
         morgueAdmission.setIdentificationTagNo(identificationTagNo);
         morgueAdmission.setBroughtBy(broughtBy);
+        morgueAdmission.setEhrMorgueStrength(hospitalCoreService.getEhrMorgueStrengthById(admittedUnit));
         morgueAdmission.setCompartmentNo(compartmentNo);
         morgueAdmission.setConsent(consent);
         morgueAdmission.setCreatedBy(Context.getAuthenticatedUser());
@@ -159,7 +161,10 @@ public class MorgueDetailFragmentController {
                hospitalCoreService.saveEhrMorgueQueue(ehrMorgueQueue);
            }
        }
-
+       //mark that the compartment allocated is occupied
+        MorgueCompartmentAllocation morgueCompartmentAllocation = hospitalCoreService.getMorgueCompartmentAllocationUsed(admittedUnit, compartmentNo);
+        morgueCompartmentAllocation.setAllocated(1);
+        hospitalCoreService.saveMorgueCompartmentAllocation(morgueCompartmentAllocation);
 
     }
     public void addMorgueUnits(@RequestParam(value = "morgueName") String morgueName,
@@ -176,11 +181,11 @@ public class MorgueDetailFragmentController {
         ehrMorgueStrength.setCreatedOn(new Date());
         EhrMorgueStrength saveStrength = hospitalCoreService.saveEhrMorgueStrength(ehrMorgueStrength);
         //save the compartments units for every department
-        MorgueCompatimentAllocation morgueCompatimentAllocation = null;
-        for(int s=0; s<=saveStrength.getStrength(); s++) {
-            morgueCompatimentAllocation = new MorgueCompatimentAllocation();
-            morgueCompatimentAllocation.setMorgueStrength(saveStrength);
-            morgueCompatimentAllocation.setCompartimentNumber(getMorgueAbbreviation(saveStrength.getMorgueName()+"-"+s));
+        MorgueCompartmentAllocation morgueCompatimentAllocation;
+        for(int s=0; s<saveStrength.getStrength(); s++) {
+            morgueCompatimentAllocation = new MorgueCompartmentAllocation();
+            morgueCompatimentAllocation.setMorgueStrength(saveStrength.getStrength());
+            morgueCompatimentAllocation.setCompartmentNumber(getMorgueAbbreviation(Context.getService(KenyaEmrService.class).getDefaultLocation().getName(),saveStrength.getMorgueName())+"-"+s);
             morgueCompatimentAllocation.setAllocated(0);
             morgueCompatimentAllocation.setVoided(0);
             hospitalCoreService.saveMorgueCompartmentAllocation(morgueCompatimentAllocation);
@@ -191,29 +196,35 @@ public class MorgueDetailFragmentController {
         HospitalCoreService hospitalCoreService = Context.getService(HospitalCoreService.class);
 
         List<SimpleObject> units = null;
-        List<EhrMorgueStrength> ehrMorgueStrengths = hospitalCoreService.getEhrMorgueStrength();
+        List<EhrMorgueStrength> ehrMorgueStrengths = hospitalCoreService.getEhrMorgueStrength(0);
         units = SimpleObject.fromCollection(ehrMorgueStrengths, uiUtils, "ehrMorgueStrengthId", "morgueName", "description","strength","retired");
 
         return units;
     }
 
-    private String getMorgueAbbreviation(String name) {
-        StringBuilder firstLetters = new StringBuilder();
-        for (String word : name.split("\\s+")) {
+    private String getMorgueAbbreviation(String facilityName, String name) {
+        StringBuilder formatFacilityName = new StringBuilder();
+        StringBuilder formatName = new StringBuilder();
+        for (String word : facilityName.split("\\s+")) {
             if (!word.isEmpty()) {
-                firstLetters.append(word.charAt(0));
+                formatFacilityName.append(word.charAt(0));
             }
         }
-        return firstLetters.toString();
+
+        for (String word : name.split("\\s+")) {
+            if (!word.isEmpty()) {
+                formatName.append(word.charAt(0));
+            }
+        }
+        return formatFacilityName.toString()+"-"+formatName;
     }
 
     public List<SimpleObject> fetchAvailableCompartmentUnits(@RequestParam(value = "dept", required = false) Integer dept, UiUtils uiUtils) {
         HospitalCoreService hospitalCoreService = Context.getService(HospitalCoreService.class);
-        EhrMorgueStrength ehrMorgueStrength = hospitalCoreService.getEhrMorgueStrengthById(dept);
 
-        List<SimpleObject> allocations = null;
-        List<MorgueCompatimentAllocation> morgueCompatimentAllocationList = hospitalCoreService.getMorgueCompartmentAllocationList(ehrMorgueStrength,0);
-        allocations = SimpleObject.fromCollection(morgueCompatimentAllocationList, uiUtils, "compartimentId", "morgueStrength", "compartimentNumber","allocated","voided");
+        List<SimpleObject> allocations;
+        List<MorgueCompartmentAllocation> morgueCompatimentAllocationList = hospitalCoreService.getMorgueCompartmentAllocationList(dept,0);
+        allocations = SimpleObject.fromCollection(morgueCompatimentAllocationList, uiUtils, "compartmentId", "morgueStrength", "compartmentNumber","allocated","voided");
 
         return allocations;
     }
