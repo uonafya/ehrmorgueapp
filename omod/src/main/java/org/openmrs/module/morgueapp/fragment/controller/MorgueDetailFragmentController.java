@@ -115,18 +115,29 @@ public class MorgueDetailFragmentController {
 
     }
 
-    public void admitBodyDetails(@RequestParam(value = "patientId") Patient patient,
-                                 @RequestParam(value = "dateOfDeath") Date dateOfDeath,
-                                 @RequestParam(value = "bodyType") String bodyType,
-                                 @RequestParam(value = "dateOfAdmission") Date dateOfAdmission,
-                                 @RequestParam(value = "receivedBy") String receivedBy,
-                                 @RequestParam(value = "propertyWithBody") String propertyWithBody,
-                                 @RequestParam(value = "identificationTagNo") String identificationTagNo,
-                                 @RequestParam(value = "broughtBy") String broughtBy,
-                                 @RequestParam(value = "compartmentNo") String compartmentNo,
-                                 @RequestParam(value = "admittedUnit") Integer admittedUnit,
-                                 @RequestParam(value = "consent") String consent) {
+    public void admitBodyDetails(@RequestParam(value = "patientId", required = false) Patient patient,
+                                 @RequestParam(value = "dateOfDeath", required = false) Date dateOfDeath,
+                                 @RequestParam(value = "bodyType", required = false) String bodyType,
+                                 @RequestParam(value = "dateOfAdmission", required = false) Date dateOfAdmission,
+                                 @RequestParam(value = "receivedBy", required = false) String receivedBy,
+                                 @RequestParam(value = "propertyWithBody", required = false) String propertyWithBody,
+                                 @RequestParam(value = "identificationTagNo", required = false) String identificationTagNo,
+                                 @RequestParam(value = "broughtBy", required = false) String broughtBy,
+                                 @RequestParam(value = "compartmentNo", required = false) String compartmentNo,
+                                 @RequestParam(value = "admittedUnit", required = false) Integer admittedUnit,
+                                 @RequestParam(value = "consent", required = false) String consent) {
         HospitalCoreService hospitalCoreService = Context.getService(HospitalCoreService.class);
+        System.out.println("patientId>>>"+patient);
+        System.out.println("dateOfDeath>>>"+dateOfDeath);
+        System.out.println("bodyType>>>"+bodyType);
+        System.out.println("dateOfAdmission>>>"+dateOfAdmission);
+        System.out.println("receivedBy>>>"+receivedBy);
+        System.out.println("propertyWithBody>>>"+propertyWithBody);
+        System.out.println("broughtBy>>>"+broughtBy);
+        System.out.println("compartmentNo>>>"+compartmentNo);
+        System.out.println("admittedUnit>>>"+admittedUnit);
+        System.out.println("consent>>>"+consent);
+
         MorgueAdmission morgueAdmission = new MorgueAdmission();
         morgueAdmission.setPatient(patient);
         morgueAdmission.setDateOfDeath(dateOfDeath);
@@ -168,9 +179,9 @@ public class MorgueDetailFragmentController {
 
     }
     public void addMorgueUnits(@RequestParam(value = "morgueName") String morgueName,
-                                      @RequestParam(value = "description") String description,
-                                      @RequestParam(value = "strength") int strength,
-                                      @RequestParam(value = "retired") int retired){
+                                      @RequestParam(value = "description", required = false) String description,
+                                      @RequestParam(value = "strength", required = false) int strength,
+                                      @RequestParam(value = "retired", required = false) int retired){
         HospitalCoreService hospitalCoreService = Context.getService(HospitalCoreService.class);
         EhrMorgueStrength ehrMorgueStrength = new EhrMorgueStrength();
         ehrMorgueStrength.setMorgueName(morgueName);
@@ -216,16 +227,14 @@ public class MorgueDetailFragmentController {
                 formatName.append(word.charAt(0));
             }
         }
-        return formatFacilityName.toString()+"-"+formatName;
+        return formatFacilityName+"-"+formatName;
     }
 
     public List<SimpleObject> fetchAvailableCompartmentUnits(@RequestParam(value = "dept", required = false) Integer dept, UiUtils uiUtils) {
         HospitalCoreService hospitalCoreService = Context.getService(HospitalCoreService.class);
-
         List<SimpleObject> allocations;
         List<MorgueCompartmentAllocation> morgueCompatimentAllocationList = hospitalCoreService.getMorgueCompartmentAllocationList(dept,0);
         allocations = SimpleObject.fromCollection(morgueCompatimentAllocationList, uiUtils, "compartmentId", "morgueStrength", "compartmentNumber","allocated","voided");
-
         return allocations;
     }
 }

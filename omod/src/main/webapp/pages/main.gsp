@@ -71,7 +71,7 @@
                             'compartmentNo': jq("#compartmentNo").val(),
                             'consent': jq("#consent").val(),
                             'patientId':jq("#patientId").val(),
-                            'admittedUnit':jq("#multiple").val()
+                            'admittedUnit':jq("#admittedUnit").val()
                         }
                     ).success(function (data) {
                         admitBodyDialog.close();
@@ -139,13 +139,14 @@
 
         jq('#admittedUnit').on('change', function() {
           var valRequired = this.value;
+          jq('#compartmentNo').empty();
           jq.getJSON('${ ui.actionLink("morgueapp", "MorgueDetail", "fetchAvailableCompartmentUnits")}',
                     {
                       dept:valRequired
                     }
                 ).success(function (data) {
                     for (var index = 0; index <= data.length; index++) {
-                        jq('#compartmentNo').append('<option value="' + data[index].compartmentId + '">' + data[index].compartmentNumber + '</option>');
+                        jq('#compartmentNo').append('<option value="' + data[index].compartmentNumber + '">' + data[index].compartmentNumber + '</option>');
                     }
             });
         });
@@ -467,7 +468,7 @@
                 <td><label>Admitted Unit<span>*</span></label></td>
                 <td>
                 <select name="admittedUnit" id="admittedUnit">
-                    <option value="0">-----Select a unit-----</option>
+                    <option>-----Select a unit-----</option>
                 </select>
                 </td>
             </tr>
@@ -496,7 +497,7 @@
                 <td><label for="compartmentNo" style="width: 100px; display: inline-block;">Compartment Number:</label></td>
                 <td>
                 <select id="compartmentNo" name="compartmentNo" style="min-width: 250px;" placeholder="Select Compartment number">
-                  <option value="0">-----Select-----</option>
+                  <option value>-----Select-----</option>
                 </select>
                 </td>
             </tr>
