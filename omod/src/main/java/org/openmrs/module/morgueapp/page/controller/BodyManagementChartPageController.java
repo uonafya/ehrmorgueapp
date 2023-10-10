@@ -2,6 +2,7 @@ package org.openmrs.module.morgueapp.page.controller;
 
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.hospitalcore.util.DateUtils;
 import org.openmrs.module.kenyaui.annotation.AppPage;
 import org.openmrs.module.morgueapp.MorgueConstants;
 import org.openmrs.ui.framework.page.PageModel;
@@ -15,6 +16,8 @@ public class BodyManagementChartPageController {
         Patient patient = Context.getPatientService().getPatientByUuid(identifier);
 
         model.addAttribute("currentPatient", patient);
+        model.addAttribute("deceasedDate", DateUtils.getDateFromDateAsString(patient.getDeathDate(), "yyyy-mm-dd hh:mm"));
+        model.addAttribute("morgueID", patient.getPatientIdentifier(Context.getPatientService().getPatientIdentifierTypeByUuid("3FF91B30-04B8-4B0D-98B3-9295122B5F84")));
 
     }
 }
