@@ -34,6 +34,10 @@
 
 <div class="patient-header new-patient-header">
     <div class="identifiers">
+        <em>&nbsp; &nbsp; Status:</em>
+        <span>${status}</span>
+    </div>
+    <div class="identifiers">
         <em>&nbsp; &nbsp; Identifier:</em>
         <span>${morgueID}</span>
     </div>
@@ -44,12 +48,6 @@
     </div>
     <div class="clear"></div>
 </div>
-<div style="float: right;">
-    <button id="bodyDischarge" class="cancel">
-        <i class="icon-refresh"></i>
-        Request Discharge
-    </button>
-</div>
 <div class="ke-page-content">
 	<table cellpadding="0" cellspacing="0" border="0" width="100%">
 		<tr>
@@ -58,6 +56,7 @@
 			</td>
 
 			<td width="55%" valign="top" style="padding-left: 5px">
+			  ${ ui.includeFragment("morgueapp", "morgueConsent") }
 				${ ui.includeFragment("morgueapp", "morgueServices") }
 				${ ui.includeFragment("morgueapp", "morgueOfferedServices") }
 			</td>

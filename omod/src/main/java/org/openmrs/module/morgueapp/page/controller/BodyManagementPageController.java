@@ -3,7 +3,10 @@ package org.openmrs.module.morgueapp.page.controller;
 
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.hospitalcore.HospitalCoreService;
+import org.openmrs.module.hospitalcore.model.MorgueAdmission;
 import org.openmrs.module.hospitalcore.util.DateUtils;
+import org.openmrs.module.hospitalcore.util.MorgueUtils;
 import org.openmrs.module.kenyaui.annotation.AppPage;
 import org.openmrs.module.morgueapp.MorgueConstants;
 import org.openmrs.ui.framework.page.PageModel;
@@ -15,10 +18,11 @@ public class BodyManagementPageController {
     public void controller(PageModel model, @RequestParam(value = "identifier", required = false) String identifier){
 
         Patient patient = Context.getPatientService().getPatientByUuid(identifier);
-
+        MorgueAdmission morgueAdmission = Context.getService(HospitalCoreService.class).getMorgueAdmissionByPatient(patient);
         model.addAttribute("currentPatient", patient);
         model.addAttribute("deceasedDate", DateUtils.getDateFromDateAsString(patient.getDeathDate(), "yyyy-mm-dd hh:mm"));
         model.addAttribute("morgueID", patient.getPatientIdentifier(Context.getPatientService().getPatientIdentifierTypeByUuid("3FF91B30-04B8-4B0D-98B3-9295122B5F84")));
+        model.addAttribute("status", MorgueUtils.getStringValue(morgueAdmission.getStatus()));
 
 
     }
