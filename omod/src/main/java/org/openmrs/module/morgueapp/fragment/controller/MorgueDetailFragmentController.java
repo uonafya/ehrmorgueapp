@@ -6,7 +6,6 @@ import org.openmrs.PatientIdentifier;
 import org.openmrs.PatientIdentifierType;
 import org.openmrs.PersonName;
 import org.openmrs.api.PatientService;
-import org.openmrs.api.PersonService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.hospitalcore.HospitalCoreService;
 import org.openmrs.module.hospitalcore.IdentifierTypes;
@@ -46,9 +45,7 @@ public class MorgueDetailFragmentController {
                                   @RequestParam(value = "diagnosis", required = false) String diagnosis,
                                   @RequestParam(value = "description", required = false) String description
                                   ) {
-        PersonService personService = Context.getPersonService();
         PatientService patientService = Context.getPatientService();
-        HospitalCoreService hospitalCoreService = Context.getService(HospitalCoreService.class);
         //create person object
         PersonName personName = new PersonName();
         personName.setGivenName(firstName);
@@ -127,16 +124,6 @@ public class MorgueDetailFragmentController {
                                  @RequestParam(value = "admittedUnit", required = false) Integer admittedUnit,
                                  @RequestParam(value = "consent", required = false) String consent) {
         HospitalCoreService hospitalCoreService = Context.getService(HospitalCoreService.class);
-        System.out.println("patientId>>>"+patient);
-        System.out.println("dateOfDeath>>>"+dateOfDeath);
-        System.out.println("bodyType>>>"+bodyType);
-        System.out.println("dateOfAdmission>>>"+dateOfAdmission);
-        System.out.println("receivedBy>>>"+receivedBy);
-        System.out.println("propertyWithBody>>>"+propertyWithBody);
-        System.out.println("broughtBy>>>"+broughtBy);
-        System.out.println("compartmentNo>>>"+compartmentNo);
-        System.out.println("admittedUnit>>>"+admittedUnit);
-        System.out.println("consent>>>"+consent);
 
         MorgueAdmission morgueAdmission = new MorgueAdmission();
         morgueAdmission.setPatient(patient);

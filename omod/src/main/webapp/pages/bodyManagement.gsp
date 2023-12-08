@@ -4,7 +4,10 @@
 %>
 <script type="text/javascript">
   jq(function () {
-    jq("#dptabs").tabs();
+    jq("#bodyDischarge").on("click", function (e) {
+        e.preventDefault();
+        console.log("Body discharge requested");
+    });
   });
 </script>
 
@@ -30,12 +33,6 @@
 </div>
 
 <div class="patient-header new-patient-header">
-    <div class="demographics">
-        <h1 class="name" style="border-bottom: 1px solid #ddd;">
-            <span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</span>
-        </h1>
-    </div>
-
     <div class="identifiers">
         <em>&nbsp; &nbsp; Identifier:</em>
         <span>${morgueID}</span>
@@ -47,19 +44,26 @@
     </div>
     <div class="clear"></div>
 </div>
-<div id="dptabs">
-      <ul>
-          <li><a href="#morgue-bio">Body Information</a></li>
-          <li><a href="#morgue-services">Morgue Services</a></li>
-          <li><a href="#morgue-stats">Morgue Statistics</a></li>
-      </ul>
-      <div id="morgue-bio">
-          ${ ui.includeFragment("morgueapp", "morgueBio") }
-      </div>
-      <div id="morgue-services">
-          ${ ui.includeFragment("morgueapp", "morgueServices") }
-      </div>
-      <div id="morgue-stats">
-          ${ ui.includeFragment("morgueapp", "morgueStatistics") }
-      </div>
+<div style="float: right;">
+    <button id="bodyDischarge" class="cancel">
+        <i class="icon-refresh"></i>
+        Request Discharge
+    </button>
+</div>
+<div class="ke-page-content">
+	<table cellpadding="0" cellspacing="0" border="0" width="100%">
+		<tr>
+			<td width="30%" valign="top">
+				${ ui.includeFragment("morgueapp", "morgueBio") }
+			</td>
+
+			<td width="55%" valign="top" style="padding-left: 5px">
+				${ ui.includeFragment("morgueapp", "morgueServices") }
+				${ ui.includeFragment("morgueapp", "morgueOfferedServices") }
+			</td>
+			<td width="15%" valign="top" style="padding-left: 5px">
+				${ ui.includeFragment("morgueapp", "morgueUsefulLinks") }
+			</td>
+		</tr>
+	</table>
 </div>

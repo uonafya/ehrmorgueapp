@@ -94,6 +94,14 @@
             jq("#dateOfDeath").val(info[3])
             jq("#patientId").val(info[0])
             jq("#queueId").val(info[7]);
+            jq.getJSON('${ ui.actionLink("morgueapp", "MorgueDetail", "fetchUnitDetails")}',
+                    {
+                    }
+                ).success(function (data) {
+                    for (var index = 0; index <= data.length; index++) {
+                        jq('#admittedUnit').append('<option value="' + data[index].ehrMorgueStrengthId + '">' + data[index].morgueName + '-' + data[index].strength + '</option>');
+                    }
+            });
             admitBodyDialog.show();
         });
         jq('#admittedBodies tbody').on('click', 'tr', function () {
@@ -104,14 +112,6 @@
                     var info = tbl1.row(this).data();
                     ui.navigate('morgueapp', 'bodyManagementChart', {identifier: info[0]});
           });
-        jq.getJSON('${ ui.actionLink("morgueapp", "MorgueDetail", "fetchUnitDetails")}',
-                {
-                }
-            ).success(function (data) {
-                for (var index = 0; index <= data.length; index++) {
-                    jq('#admittedUnit').append('<option value="' + data[index].ehrMorgueStrengthId + '">' + data[index].morgueName + '-' + data[index].strength + '</option>');
-                }
-        });
         jq("#diagnosis").on("focus.autocomplete", function () {
             jq(this).autocomplete({
                 source: function (request, response) {
@@ -307,6 +307,7 @@
         <li><a href="#morgue-patients">Admission Queue</a></li>
         <li><a href="#morgue-queue">Admitted Bodies</a></li>
         <li><a href="#morgue-discharge">Discharged Bodies</a></li>
+        <li><a href="#morgue-stats">Morgue Statistics</a></li>
     </ul>
     <div id="morgue-patients">
         <table id="deadDetails">
@@ -347,7 +348,10 @@
         ${ ui.includeFragment("morgueapp", "morgueQueue") }
     </div>
     <div id="morgue-discharge">
-            ${ ui.includeFragment("morgueapp", "dischargedBodies") }
+        ${ ui.includeFragment("morgueapp", "dischargedBodies") }
+    </div>
+    <div id="morgue-stats">
+        ${ ui.includeFragment("morgueapp", "morgueStatistics") }
     </div>
 </div>
 <div id="enroll-body-details-dialog" class="dialog" style="display:none;  height: auto !important; width: auto !important;">
